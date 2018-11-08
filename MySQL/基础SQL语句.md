@@ -208,7 +208,67 @@ UNION
 SELECT username FROM user02
 ORDER BY username;/*排序*/
 ```
+* 连接（多表查询）
+```
+1. INNER JOIN（内连接,或等值连接）：获取两个表中字段匹配关系的记录。
+2. LEFT JOIN（左连接）：获取左表所有记录，即使右表没有对应匹配的记录。
+3. RIGHT JOIN（右连接）： 与 LEFT JOIN 相反，用于获取右表所有记录，即使左表没有对应匹配的记录。
+```
+表数据
+- name_age表 == a表
++-----+--------+----+
+| age | name  | id |
++-----+--------+----+
+| 18  | 张三   | 1 |
+| 20  | 王五   | 2 |
+| 21  | 张麻子 | 3 |
++-----+--------+----+
+- name_address表 == b表
++----------+------+----+
+| address | name | id |
++----------+------+----+
+| 北京一路 | 张三  | 1 |
+| 北京二路 | 李四  | 2 |
+| 北京三路 | 王五  | 3 |
++----------+------+----+
+1. INNER JOIN 取两者共同部分
+![内连接](img/img_innerjoin.gif)
+```sql
+/*name_age a 给表起别名*/
+SELECT a.name,a.age,b.address FROM name_age a INNER JOIN name_address b WHERE（on） a.name=b.name;/* on 相当于where*/
 
++------+-----+----------+
+| name | age | address |
++------+-----+----------+
+| 张三 | 18 | 北京一路 |
+| 王五 | 20 | 北京三路 |
++------+-----+----------+
+```
+2. LEFT JOIN 以左边数据表为准，没对上的为NUll
+![内连接](img/img_leftjoin.gif)
+```sql
+SELECT a.name,a.age,b.address FROM name_age a left JOIN name_address b on
+ a.name=b.name;
++--------+-----+----------+
+| name  | age | address |
++--------+-----+----------+
+| 张三   | 18 | 北京一路 |
+| 王五   | 20 | 北京三路 |
+| 张麻子  | 21 | NULL   |
++--------+-----+----------+
+```
+2. RIGHT JOIN 以右边的数据为准，没对上的为NUll
+![内连接](img/img_rightjoin.gif)
+```sql
+SELECT b.name,a.age,b.address FROM name_age a right JOIN name_address b on a.name=b.name;
++------+------+----------+
+| name | age  | address |
++------+------+----------+
+| 张三 | 18   | 北京一路 |
+| 王五 | 20   | 北京三路 |
+| 李四 | NULL | 北京二路 |
++------+------+----------+
+```
 #### 数据处理
 * 排序
 ```sql

@@ -123,9 +123,19 @@ INSERT INTO table_name ( field1, field2,...fieldN )
 #### 删除
 * 删除表
 ```sql
+/*表名*/
 DROP TABLE table_name ;
 ```
-#### where子句
+
+* 删除字段
+```sql
+/*表名  筛选字段条件*/
+DELETE FROM table_name [WHERE Clause]
+/*示例*/
+DELETE FROM user WHERE user_id=3;
+```
+#### 条件
+* where语句
 ```sql
 /*过滤表达式的比较运算符*/
 操作符	          描述
@@ -142,5 +152,100 @@ BETWEEN  选择在给定范围值内的值   expr [NOT] BETWEEN begin_expr AND e
 LIKE     匹配基于模式匹配的值       firstName LIKE 'a%';
 IN       指定值是否匹配列表中的任何值
 IS NULL  检查该值是否为NULL
+
+/*示例*/
+DELETE FROM user WHERE id BETWEEN 11 and 16;
 ```
-#### 
+* LIKE语句
+```sql
+/*LIKE 通常与 % 一同使用，类似于一个元字符的搜索*/
+SELECT field1, field2,...fieldN 
+FROM table_name
+WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
+/*示例*/
+SELECT * from user  WHERE user_name LIKE '李%';
+```
+#### 更新
+* 更新表结构
+> ALTER 删除，添加, 修改表字段
+```sql
+/*删除字段*/
+ALTER TABLE user  DROP age;
+
+/*添加字段*/
+ALTER TABLE user ADD age INT;
+
+/*修改字段类型  MODIFY 或 CHANGE*/
+ALTER TABLE user MODIFY username CHAR(20);
+
+/*修改字段名称和类型 旧字段  新字段  类型*/
+ALTER TABLE user CHANGE old_name new_name INT;
+```
+* update语句
+```sql
+/*表  字段  新值*/
+UPDATE table_name SET field1=new_value1, field2=new_value2
+[WHERE Clause]
+/*示例*/
+UPDATE user SET username='张三', password='123456'
+```
+#### 组合
+* UNION语句
+> 用于连接两个以上的 SELECT 语句的结果组合到一个结果集合中。多个 SELECT 语句会删除重复的数据。
+```sql
+/*两个select 结果集*/
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions]
+UNION [ALL | DISTINCT] /*ALL：所有数据包含重复 DISTINCT:删除重复数据*/
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions];
+
+/*示例*/
+SELECT username FROM user01
+UNION
+SELECT username FROM user02
+ORDER BY username;/*排序*/
+```
+
+#### 数据处理
+* 排序
+```sql
+/* ASC升序  DESC降序*/
+ORDER BY field1, [field2...] [ASC [DESC]]
+
+/*示例*/
+SELECT * from USER ORDER BY age ASC
+```
+* 分组（将数据按规则归类，相同规则在一类）
+> GROUP BY 语句根据 一个或多个列 对结果集进行分组(归类)。在分组的列上我们可以使用 COUNT, SUM, AVG,等函数。
+```sql
+/*function功能函数*/
+SELECT column_name, function(column_name)
+FROM table_name
+WHERE column_name operator value
+GROUP BY column_name;
+/*示例*/
+SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
++--------+----------+
+| name   | COUNT(*) |
++--------+----------+
+|  老王   |        1 |
+|  老李   |        3 |
+|  小王   |        2 |
++--------+----------+
+/*理解*/
++----+--------+---------------------+--------+
+| id | name   | date                | singin |
++----+--------+---------------------+--------+
+|  1 | 老李    | 2017-08-22 10:25:33 |      1 |
+|  2 | 小王    | 2017-08-20 10:25:47 |      3 |
+|  3 | 老王    | 2017-08-19 10:26:02 |      2 |
+|  4 | 小王    | 2017-08-07 10:26:14 |      4 |
+|  5 | 老李    | 2017-08-11 10:26:40 |      4 |
+|  6 | 老李    | 2017-08-04 10:26:54 |      2 |
++----+--------+---------------------+--------+
+如果像上述的数据表结构我们想统计每个人有多少个记录的时候
+我们可以使用分组，将其归到一类。
+```

@@ -134,8 +134,8 @@ DELETE FROM table_name [WHERE Clause]
 /*示例*/
 DELETE FROM user WHERE user_id=3;
 ```
-#### 条件
-* where语句
+#### 筛选
+* 判断where
 ```sql
 /*过滤表达式的比较运算符*/
 操作符	          描述
@@ -145,26 +145,41 @@ DELETE FROM user WHERE user_id=3;
 >	          大于，
 <=	          小于或等于
 >=	          大于或等于
-
-还有一些条件可以配合下面子句进行复杂的筛选。
-
+```
+##### 常用筛选子句
+* BETWEEN子句
+```sql
 BETWEEN  选择在给定范围值内的值   expr [NOT] BETWEEN begin_expr AND end_expr;
-LIKE     匹配基于模式匹配的值       firstName LIKE 'a%';
-IN       指定值是否匹配列表中的任何值
-IS NULL  检查该值是否为NULL
-
 /*示例*/
 DELETE FROM user WHERE id BETWEEN 11 and 16;
 ```
-* LIKE语句
+* LIKE子句
 ```sql
-/*LIKE 通常与 % 一同使用，类似于一个元字符的搜索*/
-SELECT field1, field2,...fieldN 
-FROM table_name
-WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
+LIKE     匹配基于模式匹配的值       firstName LIKE 'a%';
 /*示例*/
-SELECT * from user  WHERE user_name LIKE '李%';
+DELETE FROM user WHERE username LIKE '李%';
 ```
+* IN子句
+```sql
+IN       指定值是否匹配列表中的任何值
+/*示例*/
+DELETE FROM user WHERE id [NOT] IN (1,2,3);
+```
+* 空值NULL
+```sql
+IS NULL: 当列的值是 NULL,此运算符返回 true。
+IS NOT NULL: 当列的值不为 NULL, 运算符返回 true。
+/*示例*/
+DELETE FROM user WHERE username IS NULL;
+DELETE FROM user WHERE username IS NOT NULL;
+```
+* 正则表达式 REGEXP
+```sql
+REGEXP      指定字符模板
+/*示例*/
+SELECT name FROM user WHERE name REGEXP '^st';
+```
+
 #### 更新
 * 更新表结构
 > ALTER 删除，添加, 修改表字段
@@ -216,6 +231,7 @@ ORDER BY username;/*排序*/
 ```
 表数据
 - name_age表 == a表
+```sql
 +-----+--------+----+
 | age | name  | id |
 +-----+--------+----+
@@ -223,7 +239,9 @@ ORDER BY username;/*排序*/
 | 20  | 王五   | 2 |
 | 21  | 张麻子 | 3 |
 +-----+--------+----+
+```
 - name_address表 == b表
+```sql
 +----------+------+----+
 | address | name | id |
 +----------+------+----+
@@ -231,6 +249,7 @@ ORDER BY username;/*排序*/
 | 北京二路 | 李四  | 2 |
 | 北京三路 | 王五  | 3 |
 +----------+------+----+
+```
 1. INNER JOIN 取两者共同部分
 ![内连接](img/img_innerjoin.gif)
 ```sql
@@ -309,3 +328,31 @@ SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
 如果像上述的数据表结构我们想统计每个人有多少个记录的时候
 我们可以使用分组，将其归到一类。
 ```
+#### 事务
+> mysql默认事务都是自动提交，一段行为统一进行提交，
+原子性（Atomicity，或称不可分割性）、
+一致性（Consistency）、
+隔离性（Isolation，又称独立性）、
+持久性（Durability）。
+
+
+
+```sql
+/*事务处理的方法*/
+1、用 BEGIN, ROLLBACK, COMMIT来实现
+
+BEGIN 开始一个事务
+ROLLBACK 事务回滚
+COMMIT 事务确认
+2、直接用 SET 来改变 MySQL 的自动提交模式:
+
+SET AUTOCOMMIT=0 禁止自动提交
+SET AUTOCOMMIT=1 开启自动提交
+
+/*示例*/
+mysql> begin;  # 开始事务
+mysql> insert into runoob_transaction_test value(5);
+mysql> insert into runoob_transaction_test value(6);
+mysql> commit; # 提交事务
+```
+

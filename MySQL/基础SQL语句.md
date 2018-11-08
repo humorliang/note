@@ -143,28 +143,4 @@ LIKE     匹配基于模式匹配的值       firstName LIKE 'a%';
 IN       指定值是否匹配列表中的任何值
 IS NULL  检查该值是否为NULL
 ```
-DROP TABLE IF EXISTS 'user';  
-CREATE TABLE 'user' (
-  'id'      INT NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  'email'    VARCHAR(255) COMMENT '用户邮箱',
-  'phone'    VARCHAR(255) COMMENT '手机号码',
-  'password' VARCHAR(255) NOT NULL COMMENT '用户密码',
-  'user_name' VARCHAR(255) COMMENT '用户昵称',
-  'age' INT COMMENT '年龄',
-  'sex' VARCHAR(255) COMMENT '性别',
-  'status'   INT  DEFAULT 0 COMMENT '用户状态',
-  'register_time'  DATETIME  NOT NULL  DEFAULT NOW() COMMENT '注册时间',
-  PRIMARY KEY (id)
-  ENGINE = InnoDB
-  AUTO_INCREMENT = 2
-  DEFAULT CHARSET = utf8;
-
-CREATE TABLE IF NOT EXISTS `user`(
-   `id` INT UNSIGNED AUTO_INCREMENT,
-   `username` VARCHAR(100) NOT NULL,
-   `password` VARCHAR(40) NOT NULL,
-   `age` VARCHAR(10),
-   `sex` VARCHAR(10),
-   `phone` VARCHAR(20),
-   PRIMARY KEY ( `id` )
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+#### 

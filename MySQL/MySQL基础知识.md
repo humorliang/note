@@ -72,6 +72,10 @@ LONGTEXT	|0-4 294 967 295字节	|极大文本数据
 ```sql
 desc table_name;
 ```
+* 查看表创建的详细SQL语句
+```sql
+show create table user \G;
+```
 * 查询字段值
 ```sql
 SELECT  /*选择字段*/
@@ -329,14 +333,31 @@ SELECT name, COUNT(*) FROM   employee_tbl GROUP BY name;
 我们可以使用分组，将其归到一类。
 ```
 #### 事务
-> mysql默认事务都是自动提交，一段行为统一进行提交，
-原子性（Atomicity，或称不可分割性）、
-一致性（Consistency）、
-隔离性（Isolation，又称独立性）、
-持久性（Durability）。
+* 定义解析
+```
+mysql默认事务都是自动提交，一段行为统一进行提交。
+事务的满足条件：
+原子性（Atomicity，或称不可分割性）：
+    一个事务要么全完成，要么全不完成，整体性原则。
+一致性（Consistency）：
+    在事务开始之前和结束以后，数据库完整性没有被破坏。
+隔离性（Isolation，又称独立性）：
+    并发事务应该避免交叉修改数据，因为数据库支持并发事务
+持久性（Durability）：
+    事务结束后对数据修改是永久性的。
+```
+* 事务语句
+```sql
+BEGIN或START TRANSACTION；显式地开启一个事务；
+COMMIT；也可以使用COMMIT WORK，不过二者是等价的。COMMIT会提交事务，并使已对数据库进行的所有修改成为永久性的；
+ROLLBACK；有可以使用ROLLBACK WORK，不过二者是等价的。回滚会结束用户的事务，并撤销正在进行的所有未提交的修改；
+SAVEPOINT identifier；SAVEPOINT允许在事务中创建一个保存点，一个事务中可以有多个SAVEPOINT；
+RELEASE SAVEPOINT identifier；删除一个事务的保存点，当没有指定的保存点时，执行该语句会抛出一个异常；
+ROLLBACK TO identifier；把事务回滚到标记点；
+SET TRANSACTION；用来设置事务的隔离级别。InnoDB存储引擎提供事务的隔离级别有READ UNCOMMITTED、READ COMMITTED、REPEATABLE READ和SERIALIZABLE。
+```
 
-
-
+* 事务处理方法与示例
 ```sql
 /*事务处理的方法*/
 1、用 BEGIN, ROLLBACK, COMMIT来实现
@@ -351,8 +372,194 @@ SET AUTOCOMMIT=1 开启自动提交
 
 /*示例*/
 mysql> begin;  # 开始事务
-mysql> insert into runoob_transaction_test value(5);
-mysql> insert into runoob_transaction_test value(6);
+mysql> insert into test_table id value(5);
+mysql> insert into test_table id value(6);
 mysql> commit; # 提交事务
 ```
+
+#### 索引
+> 索引实际上也是一张表，索引应该建在where的条件列上，索引可以加快查询速度，但是索引会使insert，delete，update的速度变慢。
+* 创建索引
+```sql
+CREATE INDEX indexName ON mytable(username(length)); 
+```
+* 查询索引
+```sql
+SHOW INDEX FROM table_name;
+```
+* 添加索引(修改表结构）
+```sql
+/*ATLER 创建*/
+ALTER table tableName ADD INDEX indexName(columnName)
+
+/*示例  创建时就指定索引*/
+CREATE TABLE mytable(  
+    ID INT NOT NULL,   
+    username VARCHAR(16) NOT NULL,  
+    INDEX [indexName] (username(16))  /*索引*/
+);  
+```
+* 删除
+```sql
+/*使用drop删除*/
+DROP INDEX [indexName] ON mytable; 
+
+/*使用Alter删除*/
+ALTER TABLE table_name DROP INDEX c;
+```
+* 唯一索引
+```sql
+/*创建索引 UNIQUE*/
+CREATE UNIQUE INDEX indexName ON mytable(username(length)) 
+
+/*修改表结构*/
+ALTER table mytable ADD UNIQUE [indexName] (username(length))
+
+/*创建表的时候直接指定*/
+CREATE TABLE mytable(  
+    ID INT NOT NULL,   
+    username VARCHAR(16) NOT NULL,  
+    UNIQUE [indexName] (username(length))  
+);  
+```
+#### 临时表
+> 临时表只在当前连接有效，退出连接时就会销毁。
+```sql
+/*语法*/
+CREATE TEMPORARY TABLE table_name(
+    colname  type_name
+);
+/*示例*/
+CREATE TEMPORARY TABLE SalesSummary (
+    product_name VARCHAR(50) NOT NULL
+    total_sales DECIMAL(12,2) NOT NULL DEFAULT 0.00
+    avg_unit_price DECIMAL(7,2) NOT NULL DEFAULT 0.00
+    total_units_sold INT UNSIGNED NOT NULL DEFAULT 0
+);
+```
+#### 复制表
+```sql
+/*步骤*/
+1. 查看表完整的表结构
+    SHOW CREATE TABLE 命令获取创建数据表(CREATE TABLE) 语句，该语句包含了原数据表的结构，索引等。
+/*示例*/
+/*-------------------------------------------------------*/
+mysql> show create table user \G;
+*************************** 1. row ***************************
+       Table: user
+Create Table: CREATE TABLE `user2` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `age` varchar(10) DEFAULT NULL,
+  `sex` varchar(10) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8
+/*-------------------------------------------------------*/
+
+2. 用相同SQL语句创建别名表
+以下命令显示的SQL语句，修改数据表名，并执行SQL语句，通过以上命令 将完全的复制数据表结构。
+/*-------------------------------------------------------*/
+mysql> CREATE TABLE `user2` (
+    ->   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    ->   `username` varchar(100) NOT NULL,
+    ->   `password` varchar(40) NOT NULL,
+    ->   `age` varchar(10) DEFAULT NULL,
+    ->   `sex` varchar(10) DEFAULT NULL,
+    ->   `phone` varchar(20) DEFAULT NULL,
+    ->   PRIMARY KEY (`id`)
+    -> ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*-------------------------------------------------------*/
+
+3. 复制表数据
+如果你想复制表的内容，你就可以使用 INSERT INTO ... SELECT 语句来实现。
+/*-------------------------------------------------------*/
+mysql> INSERT INTO user2 (id,username,password,age,sex,phone) 
+    -> SELECT id,username,password,age,sex,phone
+    -> FROM user;
+/*-------------------------------------------------------*/
+/*结果  完成复制*/
+mysql> select * from user2;
++----+------------+----------+------+------+-------+
+| id | username   | password | age  | sex  | phone |
++----+------------+----------+------+------+-------+
+|  1 | 张三       | 123456   | NULL | NULL | NULL  |
+|  2 | 1=\《""=1  | weq*&@*# | NULL | NULL | NULL  |
+| 17 | zhang2     | dasda    | NULL | NULL | NULL  |
++----+------------+----------+------+------+-------+
+3 rows in set (0.00 sec)
+mysql> select * from user;
++----+------------+----------+------+------+-------+
+| id | username   | password | age  | sex  | phone |
++----+------------+----------+------+------+-------+
+|  1 | 张三       | 123456   | NULL | NULL | NULL  |
+|  2 | 1=\《""=1  | weq*&@*# | NULL | NULL | NULL  |
+| 17 | zhang2     | dasda    | NULL | NULL | NULL  |
++----+------------+----------+------+------+-------+
+3 rows in set (0.00 sec)
+```
+#### 补充点
+* 序列
+```sql
+/*创建*/
+AUTO_INCREMENT 关键字实现自动增长
+
+/*重置 注意不要有新的记录插入*/
+mysql> ALTER TABLE insect DROP id;
+mysql> ALTER TABLE insect
+    -> ADD id INT UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+    -> ADD PRIMARY KEY (id);
+
+/*设置开始值 auto_increment=100*/
+CREATE TABLE user(
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(30) NOT NULL, 
+    date DATE NOT NULL,
+    PRIMARY KEY (id),
+)engine=innodb auto_increment=100 charset=utf8;
+````
+
+* 重复数据
+```sql
+1. 防止
+/*PRIMARY KEY（主键） 或者 UNIQUE（唯一） 索引*/
+CREATE TABLE person
+(
+   first_name CHAR(20) NOT NULL,
+   last_name CHAR(20) NOT NULL,
+   sex CHAR(10),
+   PRIMARY KEY (last_name, first_name)/*双主键*/
+);
+/*插入时候有重复数据会报错*/
+
+/*解决方式*/
+INSERT IGNORE INTO语句:可以插入数据时进行校验，存在就忽略，没有就插入
+REPLACE INTO：数据重复时，先删除再插入
+
+2. 统计
+/*统计重复的数据*/
+SELECT COUNT(*) as num, last_name, first_name
+FROM person
+GROUP BY last_name, first_name
+HAVING num > 1;
+
+3. 过滤
+/*过滤重复的值 distinct*/
+SELECT DISTINCT last_name, first_name
+FROM person;
+
+4. 删除
+/*删除重复数据步骤：三步*/
+4.1 创建辅助表
+CREATE TABLE tmp 
+    SELECT last_name, first_name, sex 
+    FROM person 
+    GROUP BY (last_name, first_name, sex);
+4.2 删除原始数据表
+DROP TABLE person;
+4.3 重命名辅助表为原始表表名
+ALTER TABLE tmp RENAME TO person;
+```
+
 

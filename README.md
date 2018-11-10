@@ -9,8 +9,8 @@
 ## <center>目录</center>
 -------------------------
 
-### JAVA指南
-* [Java基础知识](java/JAVA基础知识.md)
+### JAVA指南
+* [Java基础知识](java/JAVA基础知识.md)
 
 
 ### WEB指南
@@ -22,7 +22,7 @@
 ### 数据库
 * [MySQL基础知识](MySQL/MySQL基础知识.md)
 * [Redis基础知识]()
-* [MongoDB基础知识]()
+* [MongoDB基础知识]()
 
 
 ### 计算机基础
@@ -34,6 +34,6 @@
 ### 服务器
 
 
-### 常见FAQ
+### 常见FAQ
 
 

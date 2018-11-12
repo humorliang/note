@@ -255,6 +255,7 @@ ORDER BY username;/*排序*/
 +----------+------+----+
 ```
 1. INNER JOIN 取两者共同部分
+
 ![内连接](img/img_innerjoin.gif)
 ```sql
 /*name_age a 给表起别名*/
@@ -268,6 +269,7 @@ SELECT a.name,a.age,b.address FROM name_age a INNER JOIN name_address b WHERE（
 +------+-----+----------+
 ```
 2. LEFT JOIN 以左边数据表为准，没对上的为NUll
+
 ![内连接](img/img_leftjoin.gif)
 ```sql
 SELECT a.name,a.age,b.address FROM name_age a left JOIN name_address b on
@@ -281,6 +283,7 @@ SELECT a.name,a.age,b.address FROM name_age a left JOIN name_address b on
 +--------+-----+----------+
 ```
 2. RIGHT JOIN 以右边的数据为准，没对上的为NUll
+
 ![内连接](img/img_rightjoin.gif)
 ```sql
 SELECT b.name,a.age,b.address FROM name_age a right JOIN name_address b on a.name=b.name;
@@ -484,8 +487,8 @@ mysql> select * from user2;
 +----+------------+----------+------+------+-------+
 | id | username   | password | age  | sex  | phone |
 +----+------------+----------+------+------+-------+
-|  1 | 张三       | 123456   | NULL | NULL | NULL  |
-|  2 | 1=\《""=1  | weq*&@*# | NULL | NULL | NULL  |
+|  1 | 张三       | 123456   | NULL | NULL  | NULL  |
+|  2 | 1=\《""=1  | weq*&@*# | NULL | NULL  | NULL  |
 | 17 | zhang2     | dasda    | NULL | NULL | NULL  |
 +----+------------+----------+------+------+-------+
 3 rows in set (0.00 sec)
@@ -561,5 +564,44 @@ DROP TABLE person;
 4.3 重命名辅助表为原始表表名
 ALTER TABLE tmp RENAME TO person;
 ```
+* SQL 注入
+```php
+// 设定$name 中插入了我们不需要的SQL语句
+$name = "'zhang'; DELETE FROM users;";
+mysqli_query($conn, "SELECT * FROM users WHERE name='{$name}'");
 
+```
+* 数据导出
+```sql
+/*导出指定数据*/
+SELECT * FROM user 
+INTO OUTFILE '/tmp/user.txt';
+
+/*导出SQL格式的数据*/
+/*备份所有的数据库及数据表*/
+mysqldump -u root -p --all-databases > database_dump.sql
+/*备份数据库*/
+mysqldump -u root -p db_name > dump.sql
+/*备份数据表*/
+mysqldump -u root -p db_name table_name > dump.sql
+
+```
+
+* 数据导入
+```sql
+/*mysql 命令导入*/
+mysql -u用户名    -p密码    <  要导入的数据库数据(test.sql)
+mysql -uroot -p123456 < test.sql
+
+/*source 命令导入*/
+create database testDB;      # 创建数据库
+mysql> use testDB;                  # 使用已创建的数据库 
+mysql> set names utf8;           # 设置编码
+mysql> source /home/testDB/testDB.sql  # 导入备份数据库
+
+/*LOAD DATA 导入数据*/
+/*当前路径导入dump.txt文件到表中*/
+LOAD DATA LOCAL INFILE 'dump.txt' INTO TABLE mytable;
+
+```
 

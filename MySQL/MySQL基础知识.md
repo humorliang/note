@@ -1,7 +1,20 @@
 ## MySQL基础知识
 ### 数据库操作
-mysql:
-> mac PassWord:  qQwer@@1234
+#### 修改密码
+```sql
+mysql8.0.13版本
+/*使用该sql修改密码报错*/
+mysql> update user set authentication_string=password('123456') where User='root';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '('123456') where User='root'' at line 1
+
+/*使用下列方法成功*/
+mysql> use mysql
+
+mysql> update user set authentication_string='' where User='root';
+
+mysql> alter user 'root'@'localhost' identified by '123456';
+
+```
 #### 创建
 ```sql
 /* IF NOT EXISTS 子句 如果不存在  防止数据错误*/

@@ -56,3 +56,34 @@ systemctl status nginx.service
 6. 显示已启动的服务
 systemctl  list-units --type=service
 ```
+
+#### 管理gunicorn服务
+* 添加一个gunicorn服务文件
+```ini
+
+; 1. 创建文件
+vim /etc/systemd/system/myapp.service
+
+; 2. 设置内容
+[Unit] 
+Description=Gunicorn instance to server myapp 
+After=network.target 
+ 
+[Service] 
+User=root
+Group=root 
+PrivateTmp=true 
+WorkingDirectory=/home/www/app    
+Environment="PATH=/home/www/py36env/bin"  ;配置虚拟环境的路径
+ExecStart=/home/www/py36env/bin/gunicorn --workers 3 --bind 0.0.0.0:8000 wsgi:app  ;gunicorn位置  工作进程数  绑定IP 端口   入口文件:app 
+ 
+[Install] 
+WantedBy=multi-user.target 
+
+; 3. 设置开机启动
+systemctl enable  myapp.service
+systemctl start  myapp.service
+
+```
+### mysql安装
+

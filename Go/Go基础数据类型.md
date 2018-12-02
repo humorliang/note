@@ -574,6 +574,13 @@ strconv.FormatFloat(f float64, fmt byte, prec int, bitSize int) string
   ```
 ### 1.9 指针
 #### 定义
+```go
+    变量    	是一种占位符，用于引用计算机的内存地址。可理解为内存地址的标签
+    指针    	表示内存地址，表示地址的指向。指针是一个指向另一个变量内存地址的"值"
+    &	        取地址符，例如：{指针}:=&{变量}
+    *	        取值符，例如：{变量}:=*{指针}
+```
+#### 理解
 - 内存：程序在内存中存储它的值，每个内存块（或字）有一个地址，通常用十六进制数表示，如：0x6b0820 或 0xf84001d7f0
 - Go 语言的取地址符是 `&`，放到一个变量前使用就会返回相应变量的内存地址
 - 这个地址可以存储在一个叫做`指针`的`特殊数据类型`
@@ -586,6 +593,7 @@ strconv.FormatFloat(f float64, fmt byte, prec int, bitSize int) string
     var intP *int  //定义一个int类型指针
     intp=&i //intP指向i内存地址，引用i变量
   ```
+- `&`取出地址，`*`根据地址取出地址指向的`值`
 - 一个指针被定义后没有分配到任何变量时，它的值为 `nil`
 #### 注意事项
 - 符号 * 可以放在一个指针前，如 *intP，得到这个指针指向地址上所存储的值；这被称为反引用（或者内容或者间接引用）操作符；另一种说法是指针转移
@@ -593,10 +601,16 @@ strconv.FormatFloat(f float64, fmt byte, prec int, bitSize int) string
     ```go
         s := "good bye"
         var p *string = &s  //定义一个p指针 并将其指向 s的内存地址
-        *p = "ciao" //将p指针指向的值变为 “cicao”
+        *p = "ciao" //将p指针指向的值变为 “cicao”   更改对象
         fmt.Printf("Here is the pointer p: %p\n", p) // prints address
         fmt.Printf("Here is the string *p: %s\n", *p) // prints string  cicao
         fmt.Printf("Here is the string s: %s\n", s) // prints same string cicao
+    ```
+    ```graph TD
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
     ```
 - 不能获取文字或常量地址
 - Go不能进行指针运算 `c=*p++`

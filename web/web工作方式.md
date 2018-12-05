@@ -41,3 +41,16 @@ Accept-Charset：UTF-8,*;q=0.5		//客户端字符编码集
 //空行,用于分割请求头和消息体
 //消息体,请求资源参数,例如POST传递的参数
 ```
+- HTTP响应包(服务器信息)
+示例
+```
+HTTP/1.1 200 OK						//状态行
+Server: nginx/1.0.8					//服务器使用的WEB软件名及版本
+Date:Date: Tue, 30 Oct 2012 04:14:25 GMT		//发送时间
+Content-Type: text/html				//服务器发送信息的类型
+Transfer-Encoding: chunked			//表示发送HTTP包是分段发的
+Connection: keep-alive				//保持连接状态
+Content-Length: 90					//主体内容长度
+//空行 用来分割消息头和主体
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"... //消息体
+```

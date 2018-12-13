@@ -26,79 +26,140 @@
 ```
 * 数据表SQL
 ```sql
-/*创建数据库*/
-CREATE DATABASE [IF NOT EXISTS] blog_cms;
-USE blog_cms;
+/*mysql8.0 版本*/
+/*在使用varchar字段类型时 必须指定大小 否则会报错*/
 
-/*用户表*/
-CREATE TABLE IF NOT EXISTS user(
-    `id` INT AUTO_INCREMENT,
-    `user_name` VARCHAR(30) NOT NULL,
-    `pass_word` VARCHAR(255) NOT NULL,
-    `email` VARCHAR(30),
-    PRIMARY KEY (`id`),
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*权限表*/
-CREATE TABLE IF NOT EXISTS rule(
-    `id` INT AUTO_INCREMENT,
-    `rule_name` TINYINT DEFAULT 00 comment '00只读  01只写 10可读可写 11不可读不可写',
-    `user_id` INT,
-    PRIMARY KEY (`id`),
-    foreign key(user_id) references user(id)
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*文章表*/
-CREATE TABLE IF NOT EXISTS article(
-    `id` INT AUTO_INCREMENT,
-    `title` VARCHAR(255) NOT NULL,
-    `content` TEXT,
-    `user_id` INT,
-    PRIMARY KEY (`id`),
-    foreign key(user_id) references user(id)
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*分类表*/
-CREATE TABLE IF NOT EXISTS tag(
-    `id` INT AUTO_INCREMENT,
-    `tag_name` VARCHAR(50),
-    `article_id` INT UNSIGINED
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*文章  分类  关系表*/
-CREATE TABLE IF NOT EXISTS article_tag(
-    `tag_id` INT AUTO_INCREMENT,
-    `article_id` INT,
-    foreign key(tag_id) references tag(id),
-    foreign key(article_id) references article(id)
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*评论表*/
-CREATE TABLE IF NOT EXISTS comment(
-    `id` INT AUTO_INCREMENT,
-    `content` VARCHAR ,
-    `user_id` INT,
-    `article_id` INT,
-    PRIMARY KEY (`id`),
-    foreign key(user_id) references user(id),
-    foreign key(article_id) references article(id)
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*回复表*/
-CREATE TABLE IF NOT EXISTS reply(
-    `id` INT AUTO_INCREMENT,
-    `content` VARCHAR,
-    `user_id` INT,
-    `comment_id` INT,
-    PRIMARY KEY (`id`),
-    foreign key(user_id) references user(id),
-    foreign key(comment_id) references comment(id)
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
-
-/*留言表*/
-CREATE TABLE IF NOT EXISTS msg(
-    `id` INT AUTO_INCREMENT,
-    `content` VARCHAR,
-    PRIMARY KEY (`id`),
-)ENGINE=InnoDB DEFAULT CHATSET=utf8;
 ```
+### REST API设计
+- 用户注册
+> http://www.example.com/v1/register
+```json
+<!-- post请求 -->
+{   
+    "data"：{
+        "username":"user",
+        "password":"123456",
+        "email":"" //选填
+    }，
+}
+<!-- response响应 -->
+{
+    "code":200,
+    "msg":"",//异常信息
+    "data":{
+        "userId":1,
+        "email":"superuser@163.com"
+    }
+}
+```
+- 用户登录
+> http://www.example.com/v1/login
+```json
+<!-- post请求 -->
+{   
+    "data":{
+        "username":"user",
+        "password":"123456"
+    }
+}
+<!-- response响应 -->
+{
+    "code":200,
+    "msg":"",
+    "data":{
+        "userId":1,
+        "sessionId":"",//加密后的cookie
+        "ruleId":1  //用户权限id
+    }
+}
+```
+- 文章
+    - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
+    > http://www.example.com/v1/post/list/tag?data=base64(data)
+    ```json
+        <!-- get请求 -->
+        {
+            "data":{
+                "userId":1, //用户id
+                "tagId":1,  //分类id
+                "pageNum":1, //分页
+            }
+        }
+        <!-- response响应 -->
+        {
+            "code":200,
+            "msg":"",
+            "data":{
+                "postList":[
+                    {
+                        "postId":1,
+                        "title":"标题",
+                        "content":"文章内容",
+                        "date":"2018-10-2",
+                        "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                    },
+                    {
+                        "postId":2,
+                        "title":"标题",
+                        "content":"文章内容",
+                        "date":"2018-10-2",
+                        "previewImgUrl":"http://www.baidu.comh/img?2.jpg",
+                    }
+                ]
+            }
+        }
+    ```
+    - 获取推荐文章列表 (返回最新5条数据)
+    > http://www.example.com/v1/post/list/recommend
+    ```json
+        <!-- get请求 -->
+        {
+            "data":{
+                
+            }
+        }
+        <!-- response响应 -->
+        {
+            "code":200,
+            "msg":"",
+            "data":{
+                "postList":[
+                    {
+                        "postId":1,
+                        "title":"标题",
+                        "content":"文章内容",
+                        "date":"2018-10-2",
+                        "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                    },
+                    {
+                        "postId":2,
+                        "title":"标题",
+                        "content":"文章内容",
+                        "date":"2018-10-2",
+                        "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                    }
+                ]
+            }
+        }
+    ```
+    - 获取文章详情
+    > http://www.example.com/v1/post/desc?data=base64(data)
+    ```json
+        <!-- get请求 -->
+        {
+            "data":{
+                "userId":1,
+                "postId":1
+            }
+        }
+        <!-- response响应 -->
+        {
+            "code":200,
+            "msg":"",
+            "data":{
+                "postId":1,
+                "title":"标题",
+                "content":"",
+            }
+        }
+    ```

@@ -74,7 +74,7 @@
 }
 ```
 - 文章
-    - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
+    - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
     > http://www.example.com/v1/post/list/tag?data=base64(data)
     ```json
         <!-- get请求 -->
@@ -147,7 +147,7 @@
     ```json
         <!-- get请求 -->
         {
-            "data":{
+            "data":{
                 "userId":1,
                 "postId":1
             }
@@ -159,7 +159,37 @@
             "data":{
                 "postId":1,
                 "title":"标题",
-                "content":"",
+                "content":"文章内容",
+                "author":"三毛",
+                "date":"2018-2-16",
             }
         }
+    ```
+    - 增加文章
+    > http://www.example.com/v1/post
+    ```json
+    <!-- post请求 -->
+    {
+        "data":{
+            "userId":1,
+            "title":"标题",
+            "desp":"描述",
+            "content":"内容",
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":200,
+        "msg":"",
+        "data":"添加成功"
+    }
+    ```
+    - 删除文章
+    ```json
+    <!-- post请求 -->
+    {
+        "data":{
+            ""
+        }
+    }
     ```

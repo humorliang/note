@@ -44,8 +44,8 @@
 }
 <!-- response响应 -->
 {
-    "code":200,
-    "msg":"",//异常信息
+    "code":0,
+    "msg":"success",//异常信息
     "data":{
         "userId":1,
         "email":"superuser@163.com"
@@ -64,8 +64,8 @@
 }
 <!-- response响应 -->
 {
-    "code":200,
-    "msg":"",
+    "code":0,
+    "msg":"success",
     "data":{
         "userId":1,
         "sessionId":"",//加密后的cookie
@@ -73,9 +73,61 @@
     }
 }
 ```
+- 用户权限
+    - 获取权限
+    > http://www.example.com/v1/rule
+    ```json
+    <!-- get -->
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":{
+            "rule_name":0,
+            "userId":1
+        }
+    }
+    ```
+    - 添加权限
+    > http://www.example.com/v1/rule
+    ```json
+    <!-- post -->
+    {
+        "data":{
+            "userId":1,
+            "ruleName":1
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":{
+            "rule_name":0,
+            "userId":1
+        }
+    }
+    ```
+    - 修改权限
+    > http://www.example.com/v1/rule
+    ```json
+    <!-- update -->
+    {
+        "data":{
+            "ruleId":1,
+            "ruleId":1
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"修改成功"
+    }
+    ```
 - 文章
     - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
-    > http://www.example.com/v1/post/list/tag?data=base64(data)
+    > http://www.example.com/v1/post/list/tag
     ```json
         <!-- get请求 -->
         {
@@ -87,8 +139,8 @@
         }
         <!-- response响应 -->
         {
-            "code":200,
-            "msg":"",
+            "code":0,
+            "msg":"success",
             "data":{
                 "postList":[
                     {
@@ -120,8 +172,8 @@
         }
         <!-- response响应 -->
         {
-            "code":200,
-            "msg":"",
+            "code":0,
+            "msg":"success",
             "data":{
                 "postList":[
                     {
@@ -143,7 +195,7 @@
         }
     ```
     - 获取文章详情
-    > http://www.example.com/v1/post/desc?data=base64(data)
+    > http://www.example.com/v1/post/desc
     ```json
         <!-- get请求 -->
         {
@@ -154,8 +206,8 @@
         }
         <!-- response响应 -->
         {
-            "code":200,
-            "msg":"",
+            "code":0,
+            "msg":"success",
             "data":{
                 "postId":1,
                 "title":"标题",
@@ -172,6 +224,7 @@
     {
         "data":{
             "userId":1,
+            "tagId":1,
             "title":"标题",
             "desp":"描述",
             "content":"内容",
@@ -179,17 +232,209 @@
     }
     <!-- response响应 -->
     {
-        "code":200,
-        "msg":"",
+        "code":0,
+        "msg":"success",
         "data":"添加成功"
     }
     ```
     - 删除文章
+    > http://www.example.com/v1/post
     ```json
-    <!-- post请求 -->
+    <!-- delete -->
     {
         "data":{
-            ""
+            "psotId":1
         }
+    }
+    <!-- responese响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"删除成功"
+    }
+    ```
+- 评论
+    - 获取评论
+    > http://www.example.com/v1/comment
+    ```json
+    <!-- get -->
+    {
+        "data":{
+            "postId":1
+        }
+    }
+    <!-- responses响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":[
+            {   
+                "commentId":1,
+                "userName":"user1",
+                "data":"2018-01-03",
+                "content":"评论内容"
+            },
+            {   
+                "commentId":2,
+                "userName":"user2",
+                "data":"2018-01-05",
+                "content":"评论内容"
+            }
+        ]
+    }
+    ```
+    - 发表评论
+    > http://www.example.com/v1/comment
+    ```json
+    <!-- post -->
+    {
+        "data":{
+            "userId":1,
+            "postId":2,
+            "content":"发表评论",
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"评论成功"
+    }
+    ```
+- 回复评论
+> http://www.example.com/v1/reply
+```json
+<!-- post -->
+{
+    "data":{
+        "commentId":1,
+        "content":"回复内容"
+    }
+}
+<!-- response响应 -->
+{
+    "code":0,
+    "msg":"success",
+    "data":"回复成功"
+}
+```
+- 分类
+    - 获取分类
+    > http://www.example.com/v1/tag
+    ```json
+    <!-- get -->
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":[
+            {
+                "tagId":1,
+                "tagName":"Go"
+            },
+            {
+                "tagId":1,
+                "tagName":"Go"
+            }
+        ]
+    }
+    ```
+    - 添加分类
+    > http://www.example.com/v1/tag
+    ```json
+    <!-- post -->
+    {
+        "data":{
+            "tagName":"服务器"
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"添加成功"
+    }
+    ```
+    - 修改分类
+    > http://www.example.com/v1/tag
+    ```json
+    <!-- update -->
+    {
+        "data":{
+            "tagId":1,
+            "tagName":"Java"
+        }
+    }
+    <!-- responses响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"修改成功"
+    }
+    ```
+    - 删除分类
+    > http://www.example.com/v1/tag
+    ```json
+    <!-- delete -->
+    {
+        "data":{
+            "tagId":1
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"删除成功"
+    }
+    ```
+- 留言
+    - 获取留言(15条一页)
+    > http://www.example.com/v1/msg/list
+    ```json
+    <!-- get -->
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":[
+            {
+                "userName":"张三",
+                "content":"留言内容",
+                "date":"2018-02-15"
+            },
+        ]
+    }
+    ```
+    - 添加留言
+    > http://www.example.com/v1/msg
+    ```json
+    <!-- post -->
+    {
+        "data":{
+            "content":"留言内容"
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"留言成功"
+    }
+    ```
+    - 删除留言
+    > http://www.example.com/v1/msg
+    ```json
+    <!-- delete -->
+    {
+        "data":{
+            "msgId":1
+        }
+    }
+    <!-- response响应 -->
+    {
+        "code":0,
+        "msg":"success",
+        "data":"删除成功"
     }
     ```

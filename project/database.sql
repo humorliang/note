@@ -34,15 +34,16 @@ CREATE TABLE IF NOT EXISTS `article`(
     `preview_img_url` VARCHAR(255),
     `is_recommend` TINYINT DEFAULT 0 COMMENT '0 不推荐 1 推荐',
     `user_id` INT,
+    `tag_id` INT,
     PRIMARY KEY (`id`),
-    foreign key(`user_id`) references user(`id`)
+    foreign key(`user_id`) references user(`id`),
+    foreign key(`tag_id`) references tag(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*分类表*/
 CREATE TABLE IF NOT EXISTS `tag`(
     `id` INT AUTO_INCREMENT,
     `tag_name` VARCHAR(50) NOT NULL,
-    `article_id` INT,
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

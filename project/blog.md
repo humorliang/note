@@ -185,6 +185,7 @@
     }
     ```
     - 删除文章
+    > http://www.example.com/v1/post
     ```json
     <!-- post请求 -->
     {

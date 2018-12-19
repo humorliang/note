@@ -30,7 +30,7 @@
 /*在使用varchar字段类型时 必须指定大小 否则会报错*/
 
 ```
-### REST API设计
+### RESTful API设计
 - 用户注册
 > http://www.example.com/v1/register
 ```json

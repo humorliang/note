@@ -89,12 +89,11 @@
     }
     ```
     - 添加权限
-    > http://www.example.com/v1/rule
+    > http://www.example.com/v1/rule/:userId
     ```json
     <!-- post -->
     {
         "data":{
-            "userId":1,
             "ruleName":1
         }
     }
@@ -109,13 +108,12 @@
     }
     ```
     - 修改权限
-    > http://www.example.com/v1/rule
+    > http://www.example.com/v1/rule/:ruleId
     ```json
-    <!-- update -->
+    <!-- put -->
     {
         "data":{
-            "ruleId":1,
-            "ruleId":1
+            "ruleName":1
         }
     }
     <!-- response响应 -->
@@ -127,12 +125,11 @@
     ```
 - 文章
     - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
-    > http://www.example.com/v1/post/list/tag
+    > http://www.example.com/v1/post/list/:tagId/:pageNum
     ```json
         <!-- get请求 -->
         {
             "data":{
-                "userId":1, //用户id
                 "tagId":1,  //分类id
                 "pageNum":1, //分页
             }
@@ -195,13 +192,12 @@
         }
     ```
     - 获取文章详情
-    > http://www.example.com/v1/post/desc
+    > http://www.example.com/v1/post/desc/:postId
     ```json
         <!-- get请求 -->
         {
             "data":{
-                "userId":1,
-                "postId":1
+                "psotId":1
             }
         }
         <!-- response响应 -->
@@ -238,7 +234,7 @@
     }
     ```
     - 删除文章
-    > http://www.example.com/v1/post
+    > http://www.example.com/v1/post/:postId
     ```json
     <!-- delete -->
     {
@@ -358,7 +354,7 @@
     - 修改分类
     > http://www.example.com/v1/tag
     ```json
-    <!-- update -->
+    <!-- put -->
     {
         "data":{
             "tagId":1,

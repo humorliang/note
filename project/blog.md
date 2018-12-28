@@ -128,12 +128,6 @@
     > http://www.example.com/v1/post/list/:tagId/:pageNum
     ```json
         <!-- get请求 -->
-        {
-            "data":{
-                "tagId":1,  //分类id
-                "pageNum":1, //分页
-            }
-        }
         <!-- response响应 -->
         {
             "code":0,
@@ -162,11 +156,6 @@
     > http://www.example.com/v1/post/list/recommend
     ```json
         <!-- get请求 -->
-        {
-            "data":{
-                
-            }
-        }
         <!-- response响应 -->
         {
             "code":0,
@@ -192,14 +181,9 @@
         }
     ```
     - 获取文章详情
-    > http://www.example.com/v1/post/desc/:postId
+    > http://www.example.com/v1/post/:postId
     ```json
         <!-- get请求 -->
-        {
-            "data":{
-                "psotId":1
-            }
-        }
         <!-- response响应 -->
         {
             "code":0,
@@ -251,14 +235,9 @@
     ```
 - 评论
     - 获取评论
-    > http://www.example.com/v1/comment
+    > http://www.example.com/v1/comment/post/:postId
     ```json
     <!-- get -->
-    {
-        "data":{
-            "postId":1
-        }
-    }
     <!-- responses响应 -->
     {
         "code":0,
@@ -419,7 +398,7 @@
     }
     ```
     - 删除留言
-    > http://www.example.com/v1/msg
+    > http://www.example.com/v1/msg/:msgId
     ```json
     <!-- delete -->
     {

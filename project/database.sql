@@ -22,6 +22,12 @@ CREATE TABLE IF NOT EXISTS `rule`(
     PRIMARY KEY (`id`),
     foreign key(`user_id`) references user(`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*分类表*/
+CREATE TABLE IF NOT EXISTS `tag`(
+    `id` INT AUTO_INCREMENT,
+    `tag_name` VARCHAR(50) NOT NULL,
+    PRIMARY KEY (`id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*文章表*/
 CREATE TABLE IF NOT EXISTS `article`(
@@ -38,13 +44,6 @@ CREATE TABLE IF NOT EXISTS `article`(
     PRIMARY KEY (`id`),
     foreign key(`user_id`) references user(`id`),
     foreign key(`tag_id`) references tag(`id`)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-/*分类表*/
-CREATE TABLE IF NOT EXISTS `tag`(
-    `id` INT AUTO_INCREMENT,
-    `tag_name` VARCHAR(50) NOT NULL,
-    PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*文章  分类  关系表*/

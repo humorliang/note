@@ -228,7 +228,7 @@
     ```
 - 评论
     - 获取评论
-    > http://www.example.com/v1/comment/post/:postId
+    > http://www.example.com/v1/comment/:postId
     ```json
     <!-- get -->
     <!-- responses响应 -->

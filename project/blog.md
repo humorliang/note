@@ -198,13 +198,11 @@
         }
     ```
     - 增加文章
-    > http://www.example.com/v1/post
+    > http://www.example.com/v1/post/:userId/:tagId
     ```json
     <!-- post请求 -->
     {
         "data":{
-            "userId":1,
-            "tagId":1,
             "title":"标题",
             "desp":"描述",
             "content":"内容",
@@ -259,13 +257,11 @@
     }
     ```
     - 发表评论
-    > http://www.example.com/v1/comment
+    > http://www.example.com/v1/comment/:userId/:postId
     ```json
     <!-- post -->
     {
         "data":{
-            "userId":1,
-            "postId":2,
             "content":"发表评论",
         }
     }
@@ -277,12 +273,11 @@
     }
     ```
 - 回复评论
-> http://www.example.com/v1/reply
+> http://www.example.com/v1/reply/:commentId
 ```json
 <!-- post -->
 {
     "data":{
-        "commentId":1,
         "content":"回复内容"
     }
 }
@@ -331,12 +326,11 @@
     }
     ```
     - 修改分类
-    > http://www.example.com/v1/tag
+    > http://www.example.com/v1/tag/:tagId
     ```json
     <!-- put -->
     {
         "data":{
-            "tagId":1,
             "tagName":"Java"
         }
     }
@@ -348,14 +342,9 @@
     }
     ```
     - 删除分类
-    > http://www.example.com/v1/tag
+    > http://www.example.com/v1/tag/:tagId
     ```json
     <!-- delete -->
-    {
-        "data":{
-            "tagId":1
-        }
-    }
     <!-- response响应 -->
     {
         "code":0,

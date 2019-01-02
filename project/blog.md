@@ -75,7 +75,7 @@
 ```
 - 用户权限
     - 获取权限
-    > http://www.example.com/v1/rule
+    > http://www.example.com/v1/rule/:userId
     ```json
     <!-- get -->
     <!-- response响应 -->

@@ -127,9 +127,15 @@
     ```
 - 文章
     - 获取不同分类的文章列表（默认时间排序分页）10篇一分页
-    > http://www.example.com/v1/post/list/:tagId/:pageNum
+    > http://www.example.com/v1/post/list/tag
     ```json
         <!-- get请求 -->
+        {
+            "data":{
+                "tagId":1,
+                "pageNum":1,
+            }
+        }
         <!-- response响应 -->
         {
             "code":0,
@@ -183,9 +189,14 @@
         }
     ```
     - 获取文章详情
-    > http://www.example.com/v1/post/:postId
+    > http://www.example.com/v1/post
     ```json
         <!-- get请求 -->
+        {
+            "data":{
+                "postId":1,
+            }
+        }
         <!-- response响应 -->
         {
             "code":0,
@@ -237,9 +248,14 @@
     ```
 - 评论
     - 获取评论
-    > http://www.example.com/v1/comment/:postId
+    > http://www.example.com/v1/comment
     ```json
     <!-- get -->
+    {
+        "data":{
+            "postId":1,
+        }
+    }
     <!-- responses响应 -->
     {
         "code":0,

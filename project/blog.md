@@ -89,11 +89,12 @@
     }
     ```
     - 添加权限
-    > http://www.example.com/v1/rule/:userId
+    > http://www.example.com/v1/rule
     ```json
     <!-- post -->
     {
         "data":{
+            "userId":1,
             "ruleName":1
         }
     }
@@ -108,11 +109,12 @@
     }
     ```
     - 修改权限
-    > http://www.example.com/v1/rule/:ruleId
+    > http://www.example.com/v1/rule
     ```json
     <!-- put -->
     {
         "data":{
+            "ruleId":1,
             "ruleName":1
         }
     }
@@ -198,11 +200,13 @@
         }
     ```
     - 增加文章
-    > http://www.example.com/v1/post/:userId/:tagId
+    > http://www.example.com/v1/post
     ```json
     <!-- post请求 -->
     {
         "data":{
+            "userId":1,
+            "tagId":1,
             "title":"标题",
             "desp":"描述",
             "content":"内容",
@@ -216,9 +220,14 @@
     }
     ```
     - 删除文章
-    > http://www.example.com/v1/post/:postId
+    > http://www.example.com/v1/post
     ```json
     <!-- delete -->
+    {
+        "data":{
+            "postId":1
+        }
+    }
     <!-- responese响应 -->
     {
         "code":0,
@@ -252,11 +261,13 @@
     }
     ```
     - 发表评论
-    > http://www.example.com/v1/comment/:userId/:postId
+    > http://www.example.com/v1/comment
     ```json
     <!-- post -->
     {
         "data":{
+            "userId":1,
+            "postId":1,
             "content":"发表评论",
         }
     }
@@ -268,11 +279,12 @@
     }
     ```
 - 回复评论
-> http://www.example.com/v1/reply/:commentId
+> http://www.example.com/v1/reply/
 ```json
 <!-- post -->
 {
     "data":{
+        "commendId":1,
         "content":"回复内容"
     }
 }
@@ -321,11 +333,12 @@
     }
     ```
     - 修改分类
-    > http://www.example.com/v1/tag/:tagId
+    > http://www.example.com/v1/tag
     ```json
     <!-- put -->
     {
         "data":{
+            "tagId":1,
             "tagName":"Java"
         }
     }
@@ -337,9 +350,14 @@
     }
     ```
     - 删除分类
-    > http://www.example.com/v1/tag/:tagId
+    > http://www.example.com/v1/tag
     ```json
     <!-- delete -->
+    {
+        "data":{
+            "tagId":1
+        }
+    }
     <!-- response响应 -->
     {
         "code":0,
@@ -382,7 +400,7 @@
     }
     ```
     - 删除留言
-    > http://www.example.com/v1/msg/:msgId
+    > http://www.example.com/v1/msg
     ```json
     <!-- delete -->
     {

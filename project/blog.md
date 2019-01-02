@@ -219,11 +219,6 @@
     > http://www.example.com/v1/post/:postId
     ```json
     <!-- delete -->
-    {
-        "data":{
-            "psotId":1
-        }
-    }
     <!-- responese响应 -->
     {
         "code":0,

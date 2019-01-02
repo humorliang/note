@@ -153,7 +153,7 @@
         }
     ```
     - 获取推荐文章列表 (返回最新5条数据)
-    > http://www.example.com/v1/post/list/recommend
+    > http://www.example.com/v1/post/list/recom
     ```json
         <!-- get请求 -->
         <!-- response响应 -->

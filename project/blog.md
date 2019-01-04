@@ -133,7 +133,7 @@
         {
             "data":{
                 "tagId":1,
-                "pageNum":1,
+                "pageNum":1
             }
         }
         <!-- response响应 -->
@@ -144,17 +144,27 @@
                 "postList":[
                     {
                         "postId":1,
+                        "desp":"描述",
                         "title":"标题",
                         "content":"文章内容",
                         "date":"2018-10-2",
                         "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                        "tagId":1,
+                        "tagName":"",
+                        "userId":"",
+                        "userName":"",
                     },
                     {
-                        "postId":2,
+                        "postId":1,
+                        "desp":"描述",
                         "title":"标题",
                         "content":"文章内容",
                         "date":"2018-10-2",
-                        "previewImgUrl":"http://www.baidu.comh/img?2.jpg",
+                        "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                        "tagId":1,
+                        "tagName":"",
+                        "userId":1,
+                        "userName":"",
                     }
                 ]
             }

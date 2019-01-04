@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `user`(
     `pen_name` VARCHAR(30) DEFAULT '三毛' comment '作者笔名',
     `pass_word` VARCHAR(255) NOT NULL,
     `data` DATETIME DEFAULT now(),
-    `timestamp` TIMESTAMP,
+    `timestamp` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `email` VARCHAR(30),
     PRIMARY KEY (`id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `article`(
     `desp` VARCHAR(255),
     `content` TEXT NOT NULL,
     `date` DATETIME DEFAULT now(),
-    `timestamp` TIMESTAMP,
+    `timestamp` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `preview_img_url` VARCHAR(255),
     `is_recommend` TINYINT DEFAULT 0 COMMENT '0 不推荐 1 推荐',
     `user_id` INT,

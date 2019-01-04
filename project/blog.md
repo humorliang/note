@@ -273,13 +273,13 @@
         "data":[
             {   
                 "commentId":1,
-                "userName":"user1",
+                "penName":"penName",
                 "data":"2018-01-03",
                 "content":"评论内容"
             },
             {   
                 "commentId":2,
-                "userName":"user2",
+                "penName":"penName",
                 "data":"2018-01-05",
                 "content":"评论内容"
             }
@@ -310,7 +310,7 @@
 <!-- post -->
 {
     "data":{
-        "commendId":1,
+        "commentId":1,
         "content":"回复内容"
     }
 }

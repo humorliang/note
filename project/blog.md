@@ -30,6 +30,7 @@
 /*在使用varchar字段类型时 必须指定大小 否则会报错*/
 
 ```
+注意：除了get请求其他请求都需要 请求头 带token
 ### RESTful API设计
 - 用户注册
 > http://www.example.com/v1/register
@@ -39,7 +40,8 @@
     "data"：{
         "username":"user",
         "password":"123456",
-        "email":"" //选填
+        "email":"", //选填
+        "pen_name":""//选填
     }，
 }
 <!-- response响应 -->
@@ -67,17 +69,24 @@
     "code":0,
     "msg":"success",
     "data":{
-        "userId":1,
-        "sessionId":"",//加密后的cookie
-        "ruleId":1  //用户权限id
+        "email": "123@163.com",
+        "pen_name": "\b刘德华",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo5LCJleHAiOjE1NDY4NDQyNjYsImlzcyI6ImJsb2dBcHAifQ.1Aef55KcUzZm3EwBXnsp8Qo9jmAw3cHqzTaTDjH5s8E",
+        "userId": 9,
+        "userName": "user"
     }
 }
 ```
 - 用户权限
     - 获取权限
-    > http://www.example.com/v1/rule/:userId
+    > http://www.example.com/v1/rule/
     ```json
     <!-- get -->
+    {
+        "data":{
+            "userId":1,
+        }
+    }
     <!-- response响应 -->
     {
         "code":0,
@@ -182,17 +191,27 @@
                 "postList":[
                     {
                         "postId":1,
+                        "desp":"描述",
                         "title":"标题",
                         "content":"文章内容",
                         "date":"2018-10-2",
                         "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                        "tagId":1,
+                        "tagName":"",
+                        "userId":1,
+                        "userName":"",
                     },
                     {
-                        "postId":2,
+                        "postId":1,
+                        "desp":"描述",
                         "title":"标题",
                         "content":"文章内容",
                         "date":"2018-10-2",
                         "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                        "tagId":1,
+                        "tagName":"",
+                        "userId":1,
+                        "userName":"",
                     }
                 ]
             }
@@ -213,10 +232,15 @@
             "msg":"success",
             "data":{
                 "postId":1,
+                "desp":"描述",
                 "title":"标题",
                 "content":"文章内容",
-                "author":"三毛",
-                "date":"2018-2-16",
+                "date":"2018-10-2",
+                "previewImgUrl":"http://www.baidu.comh/img?1.jpg",
+                "tagId":1,
+                "tagName":"",
+                "userId":1,
+                "userName":"",
             }
         }
     ```

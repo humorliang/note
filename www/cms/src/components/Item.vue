@@ -36,7 +36,7 @@
 export default {
     name: "Item",
     props: [
-        'data'
+        'data' //传递进行来的可以直接使用
     ]
 };
 </script>

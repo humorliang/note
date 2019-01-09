@@ -1,6 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+//导入axios
+import axios from 'axios'
+// 注册全局函数
+axios.defaults.baseURL="http://localhost:8090"
+Vue.prototype.axios = axios;
 
 Vue.use(Router)
 

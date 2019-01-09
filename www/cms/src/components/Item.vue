@@ -1,6 +1,7 @@
 <template>
 <div id="item">
     <Card :bordered="false" class="item-card">
+        <!-- {{data}} -->
         <Row>
             <Col :sm="4" :md="6" :lg="8">
             <img src="@/assets/a.jpg" alt="文章预览图" style="width: 90%;">
@@ -33,13 +34,16 @@
 
 <script>
 export default {
-    name: "Item"
+    name: "Item",
+    props: [
+        'data'
+    ]
 };
 </script>
 
 <style lang="stylus" scoped>
-#item .item-card .ivu-card-body{
-    padding-left :0;
+#item .item-card .ivu-card-body {
+    padding-left: 0;
 }
 
 #item .item-card p {

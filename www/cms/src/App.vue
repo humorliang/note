@@ -8,10 +8,10 @@
     <div id="content">
       <Row>
         <!-- 当屏幕再小的时候就会换行，如果不设置比例 -->
-        <Col :md="18" :lg="20">
+        <Col :md="16" :lg="18">
           <router-view/>
         </Col>
-        <Col :md="6" :lg="4">
+        <Col :md="8" :lg="6">
           <RightSider msg="右侧边栏"></RightSider>
         </Col>
       </Row>
@@ -36,7 +36,6 @@ export default {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <Menu mode="horizontal" active-name="1">
+  <Menu mode="horizontal" active-name="1" style="margin-bottom:20px;">
     <MenuItem name="1" to="/">首页</MenuItem>
     <MenuItem name="2" to="/post">极力推荐</MenuItem>
     <Submenu name="3">

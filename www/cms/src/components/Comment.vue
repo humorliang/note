@@ -1,12 +1,11 @@
 <template>
 <div id="comment" style="padding-top:20px;margin:0 20px;">
-    <h2 style="text-align:center;"><Icon type="md-book" />留言墙<Icon type="md-book" /></h2>
     <Card>
         <Row>
-            <Col span="4" style="color:green;font-size:18px;text-align:right;padding-right:10px;">
-            吐槽一下:
+            <Col span="3" style="color:green;font-size:18px;text-align:right;padding-right:10px;">
+            发表评论:
             </Col>
-            <Col span="20" style="text-align:right;">
+            <Col span="8" style="text-align:right;">
             <Input style="border-color:green;dispaly:inline-block;" type="textarea" :autosize="{minRows: 2,maxRows: 30}" placeholder="请输入内容" />
             <Button style="" type="success">提交</Button>
             </Col>

@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-www/cms2/node_modules
+www/cms/node_modules
 vue-demo/
 # C extensions
 *.so

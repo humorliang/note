@@ -107,7 +107,6 @@ page_num 页码数
                 "post_id":1,
                 "post_author":"三毛",
                 "post_date":"2018-10-10 12:00:00",
-                "post_content":"文章内容",
                 "post_title":"文章标题",
                 "post_excerpt":"文章描述",
                 "post_status" :"文章状态",
@@ -117,7 +116,6 @@ page_num 页码数
                 "post_id":2,
                 "post_author":"三毛",
                 "post_date":"2018-10-10 12:00:00",//发布时间
-                "post_content":"文章内容",
                 "post_title":"文章标题",
                 "post_excerpt":"文章描述",
                 "post_status" :"publish", //publish  libsave
@@ -129,12 +127,42 @@ page_num 页码数
 }
 ```
 ##### 分类全部文章列表
-get请求：http://www.test.com/v1/admin/term/posts?object_id=1&
+get请求：http://www.test.com/v1/admin/term/posts?term_id=1&page_num=1
 参数：query
 ```
-object_id:分类对象ID
+term_id:分类ID
 ```
 响应：
 ```json
-
+{
+    "code":0,
+    "msg":"success",
+    "data":{
+        "post_total":100,
+        "page_num":1,
+        "post_list":[{
+                "post_id":1,
+                "post_author":"三毛",
+                "post_date":"2018-10-10 12:00:00",
+                "post_title":"文章标题",
+                "post_excerpt":"文章描述",
+                "post_status" :"文章状态",
+                "comment_status":"open",
+                "comment_count":"评论数"
+            },{
+                "post_id":2,
+                "post_author":"三毛",
+                "post_date":"2018-10-10 12:00:00",//发布时间
+                "post_title":"文章标题",
+                "post_excerpt":"文章描述",
+                "post_status" :"publish", //publish  libsave
+                "comment_status":"open", //open close
+                "post_modified":"2018-10-10 12:00:00",//最后修改时间
+                "comment_count":"评论数"
+            }]
+        }
+}
 ```
+
+##### 获取文章详细信息
+get请求：http://www.test.com/v1/post?post_id=1

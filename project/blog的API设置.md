@@ -166,3 +166,41 @@ term_id:分类ID
 
 ##### 获取文章详细信息
 get请求：http://www.test.com/v1/post?post_id=1
+参数：query
+```
+post_id:文章ID
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":{
+        "post_id":1,
+        "post_author":"三毛",
+        "post_date":"2018-10-10 12:00:00",
+        "post_content":"文章内容",
+        "post_title":"文章标题",
+        "post_excerpt":"文章描述",
+        "post_status" :"文章状态",
+        "comment_status":"open",
+        "comment_count":"评论数"
+        "comment_list":[
+            {   
+                "comment_id":1,
+                "comment_author":"李四",
+                "comment_content":"",
+                "comment_date":"",
+                "comment_child_list":[
+                    {
+                        "comment_id":1,
+                        "comment_author":"王五",
+                        "comment_content":"",
+                        "comment_date":"",
+                    }
+                ]
+            }
+        ]
+    }
+}
+```

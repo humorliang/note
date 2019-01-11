@@ -63,8 +63,10 @@ CREATE TABLE IF NOT EXISTS `bc_posts`(
     `comment_status` VARCHAR(20) DEFAULT 'open' COMMENT '评论状态',
     `post_modified` DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', 
     `comment_count` INT COMMENT '评论数',
+    `term_id` BIGINT(20)UNSIGNED COMMENT '外键到分类ID',
     PRIMARY KEY (`post_id`),
-    foreign key(`post_author`) references bc_users(`user_id`)
+    foreign key(`post_author`) references bc_users(`user_id`),
+    foreign key(`term_id`) references bc_terms(`term_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /* 文章元数据表 */

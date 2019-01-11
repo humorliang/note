@@ -3,7 +3,7 @@
 ```sql
 -- 用户表字段
 Field	                Type	              Null	Key	        Default	   Extra            desc
-ID	                    bigint(20) unsigned	  PRI	NULL	               auto_increment   用户主键ID
+user_id	                    bigint(20) unsigned	  PRI	NULL	               auto_increment   用户主键ID
 user_login	            varchar(60)	 	      IND	 	                                    用户名
 user_pass	            varchar(64)	 	 	 	                                            密码
 user_nicename	        varchar(50)	 	      IND	 	                                    昵称
@@ -24,7 +24,7 @@ user_nicename	        INDEX	             None	                user_nicename
 -- 用户组字段
 Field	                Type	                 Null	Key	    Default	           Extra                   desc
 umeta_id	            bigint(20) unsigned	 	        PRI	    NULL	           auto_increment          用户组主键Id
-user_id	                bigint(20) unsigned	 	 	            '0'	               FK->wp_users.ID         外键到user
+user_id	                bigint(20) unsigned	 	 	            '0'	               FK->wp_users.user_id         外键到user
 meta_key	            varchar(255)	         Yes	IND	    NULL	 
 meta_value	            longtext	             Yes	IND	    NULL	
 
@@ -41,7 +41,7 @@ meta_key	           INDEX	None	          meta_key
 Field	        Type	                Null	Key	    Default	        Extra                 desc
 term_id	        bigint(20)unsigned	 	        PRI	 	                auto_increment        分类主键Id 
 name	        varchar(200)	 	 	 	                                                  分类名
-term_group	    bigint(10)	 	 	                    0	                                  所属组号
+term_group	    int(11)	 	 	                    0	                                      所属组号
 
 -- Indexes 分类表索引
 Keyname	        Type	        Cardinality	        Field
@@ -57,9 +57,8 @@ Field	               Type	                Null	    Key	        Default	        E
 term_taxonomy_id	   bigint(20) unsigned	 	        PRI	 	                    auto_increment       分类方法主键ID
 term_id	               bigint(20) unsigned	 	        UNI Pt1	    0	            FK->wp_terms.term_id 外键分类ID
 taxonomy	           varchar(32)	 	                UNI Pt2	 	                                     分类方法名
-description	           longtext	 	 	 	                                                             分类方法描述（文章、友链）
-parent	               bigint(20) unsigned	 	 	                0	                                 分类方法父级
-count	               bigint(20)	 	 	                        0	                                 分类方法数
+description	           varchar(255)	 	 	                                                             分类方法描述（文章、友链）
+parent_id	           bigint(20) unsigned	 	 	                0	                                 分类方法父级
 -- Indexes索引
 Keyname	                Type	    Cardinality	    Field
 PRIMARY	                PRIMARY	    2	            term_taxonomy_id
@@ -73,7 +72,7 @@ taxonomy	            INDEX	    None	        taxonomy
 -- 分类关系表
 Field	                   Type	                    Null	    Key	             Default	  Extra                             desc           
 object_id	               bigint(20) unsigned	 	            PRI Pt1	            0	                                        分类对象ID
-term_taxonomy_id	       bigint(20) unsigned	 	            PRI Pt2 & IND	    0	  FK->bc_term_taxonomy.term_taxonomy_id 外键分类方法ID
+term_taxonomy_id	       bigint(20) unsigned	 	            IND	                0	      FK->bc_term_taxonomy.term_taxonomy_id 外键分类方法ID
 -- Indexes索引
 Keyname	                Type	        Cardinality	        Field
 PRIMARY	                PRIMARY	        8	                object_id
@@ -85,7 +84,7 @@ term_taxonomy_id	    INDEX	        None	            term_taxonomy_id
 -- 文章表
 Field	                    Type	             Null	 Key	                 Default	          Extra             desc
 id	                        bigint(20) unsigned	 	     PRI & IND Pt4	 	                          auto_increment    文章主键ID
-post_author	                bigint(20) unsigned	 	 	                         0	                  FK->bc_users.ID   外键用户ID
+post_author	                bigint(20) unsigned	 	 	                         0	             FK->bc_users.user_id   外键用户ID
 post_date	                datetime	 	             IND Pt3	             0000-00-00 00:00:00	                文章发表时间
 post_content	            longtext	 	 	 	                                                                    文章内容
 post_title	                text	 	 	 	                                                                        文章标题
@@ -129,7 +128,6 @@ comment_author_IP	    varchar(100)	 	 	 	                                       
 comment_date	        datetime	 	 	                            0000-00-00 00:00:00	                        评论时间
 comment_content	        text	 	 	 	                                                                        评论内容
 comment_approved	    varchar(20)	 	                IND & Ind Pt1	1	                                        是否被允许
-comment_agent	        varchar(255)	 	 	 	                                                                评论者的user-agent
 comment_type	        varchar(20)	 	 	 	                                                                    评论的类型（回复pingback/普通normal）
 comment_parent	        bigint(20) unsigned	 	 	                    0	                    FK->bc_comments.ID  外键自身ID
 user_id	                bigint(20) unsigned	 	 	                    0	                    FK->bc_users.ID     外键用户ID
@@ -156,7 +154,7 @@ PRIMARY	        PRIMARY	    0	                meta_ID
 comment_id	    INDEX	    none	            comment_id
 meta_key	    INDEX	    none	            meta_key
 ```
-- Table: wp_links
+- Table: bc_links
 > 友情链接，广告等存储
 ```sql
 -- 友情链接表

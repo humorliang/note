@@ -5,9 +5,9 @@ USE `blog_cms`;
 /*用户表*/
 CREATE TABLE IF NOT EXISTS `user`(
     `id` INT AUTO_INCREMENT,
-    `user_name` VARCHAR(30) NOT NULL,
+    `username` VARCHAR(30) NOT NULL,
     `pen_name` VARCHAR(30) DEFAULT '三毛' comment '作者笔名',
-    `pass_word` VARCHAR(255) NOT NULL,
+    `password` VARCHAR(255) NOT NULL,
     `data` DATETIME DEFAULT now(),
     `timestamp` TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     `email` VARCHAR(30),

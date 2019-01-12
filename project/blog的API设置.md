@@ -1,6 +1,6 @@
 ### bolg的后台服务框架基于
 
-#### 用户路由
+### 全局API
 ##### 登录
 post请求：http://www.test.com/v1/user/login
 参数：表单提交
@@ -48,7 +48,18 @@ user_email:"" //邮箱
     }
 }
 ```
-##### 用户列表
+##### 上传文件
+post请求：http://www.test.com/v1/upload
+参数：表单
+```
+filename:文件名
+```
+```
+
+```
+### 后台API
+#### 用户
+##### 1.用户列表
 get请求：http://www.test.com/v1/admin/users?page_num=1
 参数：query
 响应：
@@ -74,9 +85,9 @@ get请求：http://www.test.com/v1/admin/users?page_num=1
         }]
 }
 ```
-##### 冻结用户（或删除）
+##### 2.冻结用户（或删除）
 delete请求：http://www.test.com/v1/admin/user?user_id=1 （头部携带token）
-参数：param 
+参数：query 
 ```
 user_id:1  //用户ID
 ```
@@ -88,8 +99,8 @@ user_id:1  //用户ID
     "data":"删除成功"
 }
 ```
-#### 文章路由
-##### 获取所有文章列表
+#### 文章
+##### 1.获取所有文章列表
 get请求：http://www.test.com/v1/admin/posts?page_num=1
 参数：query
 ```
@@ -108,6 +119,8 @@ page_num 页码数
                 "post_author":"三毛",
                 "post_date":"2018-10-10 12:00:00",
                 "post_title":"文章标题",
+                "term_id":"分类ID",
+                "term_name":"分类名",
                 "post_excerpt":"文章描述",
                 "post_status" :"文章状态",
                 "comment_status":"open",
@@ -117,6 +130,8 @@ page_num 页码数
                 "post_author":"三毛",
                 "post_date":"2018-10-10 12:00:00",//发布时间
                 "post_title":"文章标题",
+                "term_id":"分类ID",
+                "term_name":"分类名",
                 "post_excerpt":"文章描述",
                 "post_status" :"publish", //publish  libsave
                 "comment_status":"open", //open close
@@ -126,46 +141,320 @@ page_num 页码数
         }
 }
 ```
-##### 分类全部文章列表
-get请求：http://www.test.com/v1/admin/term/posts?term_id=1&page_num=1
-参数：query
-```
-term_id:分类ID
+##### 2.添加文章
+post请求：http://www.test.com/v1/admin/post
+参数：json
+```json
+{
+    "post_title":"标题",
+    "post_excerpt":"描述",
+    "post_content":"内容",
+}
 ```
 响应：
 ```json
 {
     "code":0,
     "msg":"success",
-    "data":{
-        "post_total":100,
-        "page_num":1,
-        "post_list":[{
-                "post_id":1,
-                "post_author":"三毛",
-                "post_date":"2018-10-10 12:00:00",
-                "post_title":"文章标题",
-                "post_excerpt":"文章描述",
-                "post_status" :"文章状态",
-                "comment_status":"open",
-                "comment_count":"评论数"
-            },{
-                "post_id":2,
-                "post_author":"三毛",
-                "post_date":"2018-10-10 12:00:00",//发布时间
-                "post_title":"文章标题",
-                "post_excerpt":"文章描述",
-                "post_status" :"publish", //publish  libsave
-                "comment_status":"open", //open close
-                "post_modified":"2018-10-10 12:00:00",//最后修改时间
-                "comment_count":"评论数"
-            }]
-        }
+    "data":"添加成功"
 }
 ```
+##### 3.编辑文章
+put请求：http://www.test.com/v1/admin/post
+参数：json
+```json
+{
+    "post_id":1,
+    "post_title":"标题",
+    "post_status":1,
+    "comment_status":1,
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"编辑成功"
+}
+```
+##### 4.删除文章
+delete请求：http://www.test.com/v1/admin/post/:post_id
+参数：无
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"编辑成功"
+}
+```
+#### 分类
+##### 1.全部文章标签
+get请求：http://www.test.com/v1/admin/taxonomy/posttags
+参数：无
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":[
+        {
+            "term_taxonomy_id":1,
+            "term_id":1,
+            "taxonomy":"post_tag",
+            "term_name":"java"
+        },{
+            "term_taxonomy_id":2,
+            "term_id":2,
+            "taxonomy":"post_tag",
+            "term_name":"Python"
+        }
+        ]
+}
+```
+##### 2.增加文章标签
+post请求：http://www.test.com/v1/admin/taxonomy/posttag
+参数:json
+```json
+{
+    "term_name":"GO",
+    "taxonomy":"posttag",
+    "description":"这是广告分类法",
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"添加成功"
+}
+```
+##### 3.删除文章标签
+delete请求：http://www.test.com/v1/admin/taxonomy/posttag/:term_id
+参数:param
+```
+term_id:标签id
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"删除成功"
+}
+```
+##### 4.获取链接分类列表
+get请求：http://www.test.com/v1/admin/taxonomy/links
+参数：无
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":[
+        {
+            "term_taxonomy_id":1,
+            "term_id":1,
+            "term_name":"服务器广告",
+            "taxonomy":"link",
+            "term_parent":{
+                "term_id":2,
+                "term_name":"广告",
+            }
 
-##### 获取文章详细信息
-get请求：http://www.test.com/v1/post?post_id=1
+        },{
+            "term_taxonomy_id":2,
+            "term_id":3,
+            "term_name":"淘宝广告",
+            "taxonomy":"link",
+            "term_parent":{
+                "term_id":2,
+                "term_name":"广告",
+            }
+        }
+    ]
+}
+```
+##### 5.添加链接分类
+post请求：http://www.test.com/v1/admin/taxonomy/link
+参数:json
+```json
+{
+    "term_name":"牛奶广告",
+    "taxonomy":"link",
+    "description":"这是广告分类法",
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"添加成功"
+}
+```
+##### 6.删除链接分类
+delete请求：http://www.test.com/v1/admin/taxonomy/link/:term_id
+参数:parma
+```
+term_id:链接分类ID
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"删除成功"
+}
+```
+##### 7.获取菜单列表
+get请求：http://www.test.com/v1/admin/taxonomy/menus
+参数：无
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":[
+        {
+            "term_parent":{
+                "term_parent_id":0,
+                "term_name":"导航菜单1",
+                "term_child_list":[
+                    {
+                        "term_taxonomy_id":1,
+                        "term_id":1,
+                        "term_name":"web案例",
+                    },{
+                        "term_taxonomy_id":2,
+                        "term_id":2,
+                        "term_name":"web案例2",
+                    }
+                ]
+            }
+        },{
+            "term_parent":{
+                "term_parent_id":0,
+                "term_name":"导航菜单2",
+                "term_child_list":[
+                    {
+                        "term_taxonomy_id":1,
+                        "term_id":1,
+                        "term_name":"web案例",
+                    },{
+                        "term_taxonomy_id":2,
+                        "term_id":2,
+                        "term_name":"web案例2",
+                    }
+                ]
+            }
+        }
+    ]
+}
+```
+##### 8.添加菜单组
+post请求：http://www.test.com/v1/admin/taxonomy/menu
+参数：json
+```json
+{
+    "term_name":"web服务器案例",
+    "taxonomy":"menu",
+    "description":"菜单分类法",
+    "term_parent_id":0,
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"添加成功"
+}
+```
+##### 9.删除菜单
+delete请求：http://www.test.com/v1/admin/taxonomy/menu/:term_id
+参数：
+```
+term_id:分类名
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"删除成功"
+}
+```
+#### 评论
+##### 1.全部评论列表
+get请求：http://www.test.com/v1/admin/comment？page_num=1
+参数：无
+```
+page_num:页码
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":[
+        {
+            "comment_id":1,
+            "comment_post_id":1,
+            "post_title":"文章标题",
+            "comment_author":"评论作者",
+            "comment_author_IP":"176.26.66.92",
+            "comment_content":"内容",
+            "comment_date":"2018-10-10",
+            "comment_approved":0 ,//是否被允许
+        },{
+            "comment_id":2,
+            "comment_post_id":1,
+            "post_title":"文章标题",
+            "comment_author":"评论作者",
+            "comment_author_IP":"176.26.66.92",
+            "comment_content":"内容",
+            "comment_date":"2018-10-10",
+            "comment_approved":0 ,//是否被允许
+        }
+    ]
+}
+```
+##### 2.编辑评论
+put请求：http://www.test.com/v1/admin/comment/
+参数：json
+```json
+{
+    "comment_id":1,
+    "comment_approved":0
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"删除成功"
+}
+```
+##### 3.删除评论
+put请求：http://www.test.com/v1/admin/comment/:comment_id
+参数：无
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"删除成功"
+}
+```
+### 界面API
+##### 1.获取方法菜单项
+> 调用分类中 api7
+##### 2.获取文章详细信息
+get请求：http://www.test.com/v1/post?post_id=1
 参数：query
 ```
 post_id:文章ID
@@ -182,14 +471,14 @@ post_id:文章ID
         "post_content":"文章内容",
         "post_title":"文章标题",
         "post_excerpt":"文章描述",
-        "post_status" :"文章状态",
-        "comment_status":"open",
-        "comment_count":"评论数"
+        "term_id":1,
+        "term_name":"java",
+        "comment_count":"评论数",
         "comment_list":[
             {   
                 "comment_id":1,
                 "comment_author":"李四",
-                "comment_content":"",
+                "comment_content":"评论内容",
                 "comment_date":"",
                 "comment_child_list":[
                     {
@@ -197,10 +486,116 @@ post_id:文章ID
                         "comment_author":"王五",
                         "comment_content":"",
                         "comment_date":"",
+                        "comment_child_list"：[]
+                    }，
+                    {
+                        "comment_id":2,
+                        "comment_author":"王五",
+                        "comment_content":"评论内容",
+                        "comment_date":"",
+                        "comment_child_list"：[]
                     }
                 ]
             }
         ]
     }
+}
+```
+##### 3.获取所选分类文章列表
+get请求：http://www.test.com/v1/terms?term_id=1&page_num=1
+参数：query
+```
+term_id：分类ID
+page_num:页码
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":{
+        "term_id":1,
+        "term_name":"go",
+        "post_list":[
+            {
+                "post_id":1,
+                "post_author":"作者",
+                "post_date":"2018-10-10",
+                "post_content":"内容",
+                "post_title":"标题",
+                "post_excerpt":"摘要",
+                "post_pre_img_url":"预览图",
+                "comment_count":10,
+            },{
+                "post_id":2,
+                "post_author":"作者",
+                "post_date":"2018-10-10",
+                "post_content":"内容",
+                "post_title":"标题",
+                "post_excerpt":"摘要",
+                "post_pre_img_url":"预览图",
+                "comment_count":10,
+            }
+        ]
+    }
+}
+```
+##### 4.获取留言
+get请求：http://www.test.com/v1/lvecots?page_num=1
+参数：query
+```
+page_num:页码
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":[
+        {   
+            "comment_id":1,
+            "comment_author":"李四",
+            "comment_content":"留言内容",
+            "comment_date":"",
+            "comment_child_list":[
+                {
+                    "comment_id":1,
+                    "comment_author":"王五",
+                    "comment_content":"",
+                    "comment_date":"",
+                    "comment_child_list"：[]
+                }，
+                {
+                    "comment_id":2,
+                    "comment_author":"王五",
+                    "comment_content":"评论内容",
+                    "comment_date":"",
+                    "comment_child_list"：[]
+                }
+            ]
+        }
+    ]
+}
+```
+##### 5.发表留言（评论）
+post请求：http://www.test.com/v1/comment 
+参数：json
+```json
+{
+    "comment_post_id":0,//留言固定为0
+    "comment_author":"",
+    "comment_author_email":"",
+    "comment_author_IP":"",
+    "comment_date":"",
+    "comment_content":"",
+    "comment_parent_id":0,
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data"："留言审核中"
 }
 ```

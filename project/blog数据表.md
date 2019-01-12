@@ -8,7 +8,7 @@ user_login	            varchar(60)	 	      IND	 	                               
 user_pass	            varchar(64)	 	 	 	                                            密码
 user_nicename	        varchar(50)	 	      IND	 	                                    昵称
 user_email	            varchar(100)	 	 	 	                                        邮箱
-user_registered	        datetime	 	 	                    0000-00-00 00:00:00	        注册时间
+user_registered	        datetime	 	 	                    0000-00-00 00:00:00	        注册时间
 user_activation_key	    varchar(60)	 	 	 	                                            激活码
 user_status	            int(11)	 	 	                        0	                        用户状态（0,1 可用、不可用）
 -- 用户表索引
@@ -34,6 +34,7 @@ PRIMARY	               PRIMARY	9	              umeta_id
 user_id	               INDEX	None	          user_id
 meta_key	           INDEX	None	          meta_key
 ```
+分类法的理解：对分类项进行拓展说明![wp分类法](./wp分类法示例.png)
 - Table: bc_terms
 > 文章和链接分类以及文章的tag分类可以在bc_terms表里找到.常见的分类有文章的分类、链接的分类，实际上还有TAG，它也是一种特殊的分类方式
 ```sql
@@ -54,11 +55,11 @@ name	        Index	        none	            name
 ```sql
 -- 分类方法表
 Field	               Type	                Null	    Key	        Default	        Extra                desc
-term_taxonomy_id	   bigint(20) unsigned	 	        PRI	 	                    auto_increment       分类方法主键ID
+term_taxonomy_id	   bigint(20) unsigned	 	        PRI	 	                    auto_increment       分类方法主键ID
 term_id	               bigint(20) unsigned	 	        UNI Pt1	    0	            FK->wp_terms.term_id 外键分类ID
 taxonomy	           varchar(32)	 	                UNI Pt2	 	                                     分类方法名
 description	           varchar(255)	 	 	                                                             分类方法描述（文章、友链）
-parent_id	           bigint(20) unsigned	 	 	                0	                                 分类方法父级
+parent_id	           bigint(20) unsigned	 	 	                0	                                 父分类ID
 -- Indexes索引
 Keyname	                Type	    Cardinality	    Field
 PRIMARY	                PRIMARY	    2	            term_taxonomy_id
@@ -67,11 +68,11 @@ taxonomy
 taxonomy	            INDEX	    None	        taxonomy
 ```
 - Table: bc_term_relationships
-> 与文章有关的分类、来自bc_terms表的tags以及这一关联存在于bc_term_relationships表里. 链接与各自分类的联系也存储于这张表中.
+> 与文章有关的分类、来自bc_terms表的tags以及这一关联存在于bc_term_relationships表里. 链接与各自分类的联系也存储于这张表中.存储文章和分类、标签的相互对应关系
 ```sql
 -- 分类关系表
 Field	                   Type	                    Null	    Key	             Default	  Extra                             desc           
-object_id	               bigint(20) unsigned	 	            PRI Pt1	            0	                                        分类对象ID
+object_id	               bigint(20) unsigned	 	            PRI Pt1	            0	                                        文章ID/链接ID
 term_taxonomy_id	       bigint(20) unsigned	 	            IND	                0	      FK->bc_term_taxonomy.term_taxonomy_id 外键分类方法ID
 -- Indexes索引
 Keyname	                Type	        Cardinality	        Field

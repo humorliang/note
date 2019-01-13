@@ -54,8 +54,12 @@ post请求：http://www.test.com/v1/upload
 ```
 filename:文件名
 ```
-```
-
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"上传成功"
+}
 ```
 ### 后台API
 #### 用户

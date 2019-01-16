@@ -6,7 +6,7 @@ USE `bg_cms`;
 CREATE TABLE IF NOT EXISTS `bc_users`(
     `user_id`  BIGINT(20)UNSIGNED AUTO_INCREMENT,
     `user_login` VARCHAR(60) NOT NULL COMMENT '用户名',
-    `user_pass` VARCHAR(64) NOT NULL COMMENT '密码',
+    `user_pass` VARCHAR(255) NOT NULL COMMENT '密码',
     `user_nicename` VARCHAR(50) DEFAULT '山猫' COMMENT '昵称',
     `user_email` VARCHAR(50)  DEFAULT '' COMMENT '邮箱',
     `user_registered` DATETIME DEFAULT now() COMMENT '注册时间',

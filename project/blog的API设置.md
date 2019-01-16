@@ -40,10 +40,9 @@ user_email:"" //邮箱
     "msg":"success",
     "data":{
         "user_id":1,
+        "user_login":"user",
         "user_nicename":"三毛",
         "user_email":"123@163.com",
-        "user_registered":"2018-10-10",
-        "user_status":0, // 0 正常 1 异常
         "token":"daqweopfdsuascak.ajofaf.foafowfe-sdfs"
     }
 }

@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `bc_posts`(
     `post_status` INT DEFAULT 0 COMMENT '文章状态(0发表,1不发表)',
     `comment_status` INT DEFAULT 0 COMMENT '评论状态(0允许,1不允许)',
     `post_modified` DATETIME ON UPDATE CURRENT_TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间', 
-    `comment_count` INT COMMENT '评论数',
+    `comment_count` INT DEFAULT 0 COMMENT '评论数',
     PRIMARY KEY (`post_id`),
     foreign key(`post_author`) references bc_users(`user_id`) ON DELETE SET NULL
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -133,3 +133,5 @@ CREATE TABLE IF NOT  EXISTS `bc_links`(
     foreign key(`link_owner`) references bc_users(`user_id`)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+/* 创建超级管理员账户 */
+INSERT INTO bc_users (user_login,user_pass) VALUES ('admin','123456');

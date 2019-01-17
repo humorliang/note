@@ -88,11 +88,11 @@ get请求：http://www.test.com/v1/admin/users?page_num=1
         }]
 }
 ```
-##### 2.冻结用户（或删除）
-delete请求：http://www.test.com/v1/admin/user?user_id=1 （头部携带token）
-参数：query 
-```
-user_id:1  //用户ID
+##### 2.用户删除
+delete请求：http://www.test.com/v1/admin/user （头部携带token）
+参数：param 
+```json
+    user_id:1  //用户ID
 ```
 响应：
 ```json
@@ -119,25 +119,26 @@ page_num 页码数
         "page_num":1,
         "post_list":[{
                 "post_id":1,
-                "post_author":"三毛",
+                "post_author":"三毛", // user_nicename
                 "post_date":"2018-10-10 12:00:00",
                 "post_title":"文章标题",
-                "term_id":"分类ID",
-                "term_name":"分类名",
+                // "term_id":"分类ID",
+                // "term_name":"分类名",
                 "post_excerpt":"文章描述",
-                "post_status" :"文章状态",
-                "comment_status":"open",
+                "post_status" :0, //0，1发表/不发表
+                "comment_status":0, //0，1允许/不允许
+                "post_modified":"2018-10-10 12:00:00",//最后修改时间
                 "comment_count":"评论数"
             },{
                 "post_id":2,
                 "post_author":"三毛",
                 "post_date":"2018-10-10 12:00:00",//发布时间
                 "post_title":"文章标题",
-                "term_id":"分类ID",
-                "term_name":"分类名",
+                // "term_id":"分类ID",
+                // "term_name":"分类名",
                 "post_excerpt":"文章描述",
-                "post_status" :"publish", //publish  libsave
-                "comment_status":"open", //open close
+                "post_status" :0, //0，1发表/不发表
+                "comment_status":0, //0，1允许/不允许
                 "post_modified":"2018-10-10 12:00:00",//最后修改时间
                 "comment_count":"评论数"
             }]
@@ -151,7 +152,7 @@ post请求：http://www.test.com/v1/admin/post
 {
     "post_title":"标题",
     "post_excerpt":"描述",
-    "post_content":"内容",
+    "post_content":"内容"
 }
 ```
 响应：
@@ -163,13 +164,43 @@ post请求：http://www.test.com/v1/admin/post
 }
 ```
 ##### 3.编辑文章
-put请求：http://www.test.com/v1/admin/post
+put请求：http://www.test.com/v1/admin/post/title
 参数：json
 ```json
 {
     "post_id":1,
     "post_title":"标题",
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"编辑成功"
+}
+```
+put请求：http://www.test.com/v1/admin/post/status 
+参数：json
+```json
+{
+    "post_id":1,
     "post_status":1,
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":"编辑成功"
+}
+```
+put请求：http://www.test.com/v1/admin/post/comment/status
+参数：json
+```json
+{
+    "post_id":1,
     "comment_status":1,
 }
 ```
@@ -182,8 +213,13 @@ put请求：http://www.test.com/v1/admin/post
 }
 ```
 ##### 4.删除文章
-delete请求：http://www.test.com/v1/admin/post/:post_id
-参数：无
+delete请求：http://www.test.com/v1/admin/post
+参数：json
+```json
+{
+    "post_id":1 //文章Id
+}
+```
 响应：
 ```json
 {
@@ -193,6 +229,29 @@ delete请求：http://www.test.com/v1/admin/post/:post_id
 }
 ```
 #### 分类
+##### 0.添加分类法和分类并关联
+post请求：http://www.test.com/v1/admin/taxonomy/term
+参数:json
+```json
+{
+    "term_name":"GO",
+    "taxonomy":"posttag",  //固定值
+    "description":"这是文章分类法", 
+    "term_parent_id":1 //父类ID
+}
+```
+响应：
+```json
+{
+    "code":0,
+    "msg":"success",
+    "data":{
+        "term_id":1,  //分类ID
+        "taxonomy_id":1 //分类法ID
+    }
+}
+```
+
 ##### 1.全部文章标签
 get请求：http://www.test.com/v1/admin/taxonomy/posttags
 参数：无
@@ -222,8 +281,9 @@ post请求：http://www.test.com/v1/admin/taxonomy/posttag
 ```json
 {
     "term_name":"GO",
-    "taxonomy":"posttag",
-    "description":"这是广告分类法",
+    "taxonomy":"posttag",  //固定值
+    "description":"这是文章分类法", 
+    "term_parent_id":1 //父类ID
 }
 ```
 响应：
@@ -235,10 +295,10 @@ post请求：http://www.test.com/v1/admin/taxonomy/posttag
 }
 ```
 ##### 3.删除文章标签
-delete请求：http://www.test.com/v1/admin/taxonomy/posttag/:term_id
+delete请求：http://www.test.com/v1/admin/taxonomy/posttag
 参数:param
-```
-term_id:标签id
+```json
+    "term_id":标签id
 ```
 响应：
 ```json

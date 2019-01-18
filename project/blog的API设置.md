@@ -229,13 +229,13 @@ delete请求：http://www.test.com/v1/admin/post
 }
 ```
 #### 分类
-##### 0.添加分类法和分类并关联
+##### 1.添加分类法和分类并关联
 post请求：http://www.test.com/v1/admin/taxonomy/term
 参数:json
 ```json
 {
     "term_name":"GO",
-    "taxonomy":"posttag",  //固定值
+    "taxonomy":"posttag",  
     "description":"这是文章分类法", 
     "term_parent_id":1 //父类ID
 }
@@ -251,196 +251,74 @@ post请求：http://www.test.com/v1/admin/taxonomy/term
     }
 }
 ```
-
-##### 1.全部文章标签
-get请求：http://www.test.com/v1/admin/taxonomy/posttags
-参数：无
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":[
-        {
-            "term_taxonomy_id":1,
-            "term_id":1,
-            "taxonomy":"post_tag",
-            "term_name":"java"
-        },{
-            "term_taxonomy_id":2,
-            "term_id":2,
-            "taxonomy":"post_tag",
-            "term_name":"Python"
-        }
-        ]
-}
-```
-##### 2.增加文章标签
-post请求：http://www.test.com/v1/admin/taxonomy/posttag
+##### 2.获取相关分类组
+get请求：http://www.test.com/v1/admin/taxonomy/term
 参数:json
 ```json
 {
-    "term_name":"GO",
-    "taxonomy":"posttag",  //固定值
-    "description":"这是文章分类法", 
-    "term_parent_id":1 //父类ID
+    "taxonomy":"posttag",  
 }
 ```
 响应：
 ```json
 {
-    "code":0,
-    "msg":"success",
-    "data":"添加成功"
+    "code": 0,
+    "data": [
+        {
+            "description": "这是文章标签分类法",
+            "taxonomy": "posttag",
+            "term_id": 2,
+            "term_name": "Java",
+            "term_parent_id": 0,
+            "term_taxonomy_id": 2
+        },
+        {
+            "description": "这是文章标签分类法",
+            "taxonomy": "posttag",
+            "term_id": 6,
+            "term_name": "web",
+            "term_parent_id": 0,
+            "term_taxonomy_id": 6
+        }
+    ],
+    "msg": "success"
 }
 ```
-##### 3.删除文章标签
-delete请求：http://www.test.com/v1/admin/taxonomy/posttag
-参数:param
-```json
-    "term_id":标签id
-```
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":"删除成功"
-}
-```
-##### 4.获取链接分类列表
-get请求：http://www.test.com/v1/admin/taxonomy/links
+##### 3.获取全部分类
+get请求：http://www.test.com/v1/admin/taxonomys/term
 参数：无
 响应：
 ```json
 {
-    "code":0,
-    "msg":"success",
-    "data":[
+    "code": 0,
+    "data": [
         {
-            "term_taxonomy_id":1,
-            "term_id":1,
-            "term_name":"服务器广告",
-            "taxonomy":"link",
-            "term_parent":{
-                "term_id":2,
-                "term_name":"广告",
-            }
-
-        },{
-            "term_taxonomy_id":2,
-            "term_id":3,
-            "term_name":"淘宝广告",
-            "taxonomy":"link",
-            "term_parent":{
-                "term_id":2,
-                "term_name":"广告",
-            }
-        }
-    ]
-}
-```
-##### 5.添加链接分类
-post请求：http://www.test.com/v1/admin/taxonomy/link
-参数:json
-```json
-{
-    "term_name":"牛奶广告",
-    "taxonomy":"link",
-    "description":"这是广告分类法",
-}
-```
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":"添加成功"
-}
-```
-##### 6.删除链接分类
-delete请求：http://www.test.com/v1/admin/taxonomy/link/:term_id
-参数:parma
-```
-term_id:链接分类ID
-```
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":"删除成功"
-}
-```
-##### 7.获取菜单列表
-get请求：http://www.test.com/v1/admin/taxonomy/menus
-参数：无
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":[
+            "description": "这是文章标签分类法",
+            "taxonomy": "posttag",
+            "term_id": 6,
+            "term_name": "web",
+            "term_parent_id": 0,
+            "term_taxonomy_id": 6
+        },
         {
-            "term_parent":{
-                "term_parent_id":0,
-                "term_name":"导航菜单1",
-                "term_child_list":[
-                    {
-                        "term_taxonomy_id":1,
-                        "term_id":1,
-                        "term_name":"web案例",
-                    },{
-                        "term_taxonomy_id":2,
-                        "term_id":2,
-                        "term_name":"web案例2",
-                    }
-                ]
-            }
-        },{
-            "term_parent":{
-                "term_parent_id":0,
-                "term_name":"导航菜单2",
-                "term_child_list":[
-                    {
-                        "term_taxonomy_id":1,
-                        "term_id":1,
-                        "term_name":"web案例",
-                    },{
-                        "term_taxonomy_id":2,
-                        "term_id":2,
-                        "term_name":"web案例2",
-                    }
-                ]
-            }
-        }
-    ]
+            "description": "这是文章标签分类法",
+            "taxonomy": "menu",
+            "term_id": 7,
+            "term_name": "web",
+            "term_parent_id": 0,
+            "term_taxonomy_id": 7
+        },
+    ],
+    "msg": "success"
 }
 ```
-##### 8.添加菜单组
-post请求：http://www.test.com/v1/admin/taxonomy/menu
+##### 4.删除相关分类
+delete请求：http://www.test.com/v1/admin/taxonomy/term
 参数：json
 ```json
 {
-    "term_name":"web服务器案例",
-    "taxonomy":"menu",
-    "description":"菜单分类法",
-    "term_parent_id":0,
+    term_id:分类名
 }
-```
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":"添加成功"
-}
-```
-##### 9.删除菜单
-delete请求：http://www.test.com/v1/admin/taxonomy/menu/:term_id
-参数：
-```
-term_id:分类名
 ```
 响应：
 ```json
@@ -452,10 +330,12 @@ term_id:分类名
 ```
 #### 评论
 ##### 1.全部评论列表
-get请求：http://www.test.com/v1/admin/comment？page_num=1
-参数：无
-```
-page_num:页码
+get请求：http://www.test.com/v1/admin/comments
+参数：json
+```json
+{
+    "page_num":页码
+}
 ```
 响应：
 ```json
@@ -603,55 +483,17 @@ page_num:页码
     }
 }
 ```
-##### 4.获取留言
-get请求：http://www.test.com/v1/lvecots?page_num=1
-参数：query
-```
-page_num:页码
-```
-响应：
-```json
-{
-    "code":0,
-    "msg":"success",
-    "data":[
-        {   
-            "comment_id":1,
-            "comment_author":"李四",
-            "comment_content":"留言内容",
-            "comment_date":"",
-            "comment_child_list":[
-                {
-                    "comment_id":1,
-                    "comment_author":"王五",
-                    "comment_content":"",
-                    "comment_date":"",
-                    "comment_child_list"：[]
-                }，
-                {
-                    "comment_id":2,
-                    "comment_author":"王五",
-                    "comment_content":"评论内容",
-                    "comment_date":"",
-                    "comment_child_list"：[]
-                }
-            ]
-        }
-    ]
-}
-```
-##### 5.发表留言（评论）
+##### 4.发表评论
 post请求：http://www.test.com/v1/comment 
 参数：json
 ```json
 {
-    "comment_post_id":0,//留言固定为0
+    "comment_post_id":1,
     "comment_author":"",
     "comment_author_email":"",
     "comment_author_IP":"",
-    "comment_date":"",
-    "comment_content":"",
-    "comment_parent_id":0,
+    "comment_content":"", 
+    "comment_parent_id":0, //父级留言评论Id
 }
 ```
 响应：
@@ -659,6 +501,6 @@ post请求：http://www.test.com/v1/comment
 {
     "code":0,
     "msg":"success",
-    "data"："留言审核中"
+    "data"："评论审核中"
 }
 ```

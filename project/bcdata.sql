@@ -104,7 +104,6 @@ CREATE TABLE IF NOT  EXISTS `bc_comments`(
     `user_id` BIGINT(20)UNSIGNED DEFAULT 0 COMMENT '外键用户ID',
     PRIMARY KEY (`comment_id`),
     foreign key(`comment_post_id`) references bc_posts(`post_id`) ON DELETE CASCADE,
-    foreign key(`comment_parent`) references bc_comments(`comment_id`) ON DELETE CASCADE,
     foreign key(`user_id`) references bc_users(`user_id`) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

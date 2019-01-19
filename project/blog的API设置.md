@@ -383,8 +383,13 @@ put请求：http://www.test.com/v1/admin/comment/
 }
 ```
 ##### 3.删除评论
-put请求：http://www.test.com/v1/admin/comment/:comment_id
-参数：无
+put请求：http://www.test.com/v1/admin/comment/
+参数：json
+```json
+{
+    "comment_id":1,
+}
+```
 响应：
 ```json
 {
@@ -394,9 +399,7 @@ put请求：http://www.test.com/v1/admin/comment/:comment_id
 }
 ```
 ### 界面API
-##### 1.获取方法菜单项
-> 调用分类中 api7
-##### 2.获取文章详细信息
+##### 1.获取文章详细信息
 get请求：http://www.test.com/v1/post?post_id=1
 参数：query
 ```
@@ -444,7 +447,7 @@ post_id:文章ID
     }
 }
 ```
-##### 3.获取所选分类文章列表
+##### 2.获取所选分类文章列表
 get请求：http://www.test.com/v1/terms?term_id=1&page_num=1
 参数：query
 ```
@@ -483,7 +486,7 @@ page_num:页码
     }
 }
 ```
-##### 4.发表评论
+##### 3.发表评论
 post请求：http://www.test.com/v1/comment 
 参数：json
 ```json
@@ -491,7 +494,6 @@ post请求：http://www.test.com/v1/comment
     "comment_post_id":1,
     "comment_author":"",
     "comment_author_email":"",
-    "comment_author_IP":"",
     "comment_content":"", 
     "comment_parent_id":0, //父级留言评论Id
 }

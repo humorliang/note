@@ -411,14 +411,11 @@ post_id:文章ID
     "code":0,
     "msg":"success",
     "data":{
-        "post_id":1,
         "post_author":"三毛",
         "post_date":"2018-10-10 12:00:00",
         "post_content":"文章内容",
         "post_title":"文章标题",
         "post_excerpt":"文章描述",
-        "term_id":1,
-        "term_name":"java",
         "comment_count":"评论数",
         "comment_list":[
             {   
@@ -448,7 +445,7 @@ post_id:文章ID
 }
 ```
 ##### 2.获取所选分类文章列表
-get请求：http://www.test.com/v1/terms?term_id=1&page_num=1
+get请求：http://www.test.com/v1/term/posts?term_id=1&page_num=1
 参数：query
 ```
 term_id：分类ID
@@ -460,8 +457,8 @@ page_num:页码
     "code":0,
     "msg":"success",
     "data":{
-        "term_id":1,
-        "term_name":"go",
+        "post_total":10,
+        "page_num":1,
         "post_list":[
             {
                 "post_id":1,

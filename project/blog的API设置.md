@@ -228,6 +228,9 @@ delete请求：http://www.test.com/v1/admin/post
     "data":"编辑成功"
 }
 ```
+##### 5.添加文章到相关分类
+post请求：http://www.test.com/v1/admin/post
+
 #### 分类
 ##### 1.添加分类法和分类并关联
 post请求：http://www.test.com/v1/admin/taxonomy/term
@@ -408,39 +411,45 @@ post_id:文章ID
 响应：
 ```json
 {
-    "code":0,
-    "msg":"success",
-    "data":{
-        "post_author":"三毛",
-        "post_date":"2018-10-10 12:00:00",
-        "post_content":"文章内容",
-        "post_title":"文章标题",
-        "post_excerpt":"文章描述",
-        "comment_count":"评论数",
-        "comment_list":[
-            {   
-                "comment_id":1,
-                "comment_author":"李四",
-                "comment_content":"评论内容",
-                "comment_date":"",
-                "comment_child_list":[
-                    {
-                        "comment_id":1,
-                        "comment_author":"王五",
-                        "comment_content":"",
-                        "comment_date":"",
-                        "comment_child_list"：[]
-                    }，
-                    {
-                        "comment_id":2,
-                        "comment_author":"王五",
-                        "comment_content":"评论内容",
-                        "comment_date":"",
-                        "comment_child_list"：[]
-                    }
-                ]
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "comment_count": 5,
+        "post_author": "山猫",
+        "post_content": "内容",
+        "post_date": "2019-01-18 16:35:20",
+        "post_excerpt": "描述",
+        "post_title": "标题"
+        "comment_list": [
+            {
+                "comment_author": "三毛",
+                "comment_content": "这是文章评论内容",
+                "comment_date": "2019-01-18 16:41:45",
+                "comment_id": 1,
+                "comment_parent": 0
+            },
+            {
+                "comment_author": "三毛",
+                "comment_content": "这是文章评论内容",
+                "comment_date": "2019-01-18 16:42:12",
+                "comment_id": 2,
+                "comment_parent": 0
+            },
+            {
+                "comment_author": "三毛",
+                "comment_content": "这是文章评论内容",
+                "comment_date": "2019-01-18 16:42:22",
+                "comment_id": 3,
+                "comment_parent": 1
+            },
+            {
+                "comment_author": "三毛",
+                "comment_content": "这是文章评论内容",
+                "comment_date": "2019-01-18 16:42:42",
+                "comment_id": 4,
+                "comment_parent": 1
             }
-        ]
+        ]  
     }
 }
 ```

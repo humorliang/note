@@ -89,7 +89,7 @@ get请求：http://www.test.com/v1/admin/users?page_num=1
 ```
 ##### 2.用户删除
 delete请求：http://www.test.com/v1/admin/user （头部携带token）
-参数：param 
+参数：json
 ```json
     user_id:1  //用户ID
 ```
@@ -233,9 +233,13 @@ post请求：http://www.test.com/v1/admin/taxonomy/term
 参数:json
 ```json
 {
+    //分类名
     "term_name":"GO",
+    //所属分类方法  文章标签：posttag  菜单：menu
     "taxonomy":"posttag",  
+    //对这个分类法的详细说明
     "description":"这是文章分类法", 
+    //这个分类名的父级
     "term_parent_id":1 //父类ID
 }
 ```
@@ -340,12 +344,10 @@ post请求：http://www.test.com/v1/admin/taxonomy/term/post
 ```
 #### 评论
 ##### 1.全部评论列表
-get请求：http://www.test.com/v1/admin/comments
-参数：json
-```json
-{
-    "page_num":页码
-}
+get请求：http://www.test.com/v1/admin/comments?page_num=1
+参数：query
+```
+page_num:页码
 ```
 响应：
 ```json
@@ -408,6 +410,9 @@ put请求：http://www.test.com/v1/admin/comment/
     "data":"删除成功"
 }
 ```
+#### 友链
+##### 1.添加友链
+
 ### 界面API
 ##### 1.获取文章详细信息
 get请求：http://www.test.com/v1/post?post_id=1

@@ -1,5 +1,4 @@
-### bolg的后台服务框架基于
-
+### 博客API设置
 ### 全局API
 ##### 登录
 post请求：http://www.test.com/v1/user/login

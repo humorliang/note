@@ -228,9 +228,6 @@ delete请求：http://www.test.com/v1/admin/post
     "data":"编辑成功"
 }
 ```
-##### 5.添加文章到相关分类
-post请求：http://www.test.com/v1/admin/post
-
 #### 分类
 ##### 1.添加分类法和分类并关联
 post请求：http://www.test.com/v1/admin/taxonomy/term
@@ -330,6 +327,17 @@ delete请求：http://www.test.com/v1/admin/taxonomy/term
     "msg":"success",
     "data":"删除成功"
 }
+```
+##### 5.分类关联相关文章
+post请求：http://www.test.com/v1/admin/taxonomy/term/post
+参数：json
+```json
+    "term_id":1,
+    "post_id":1
+```
+响应：
+```json
+
 ```
 #### 评论
 ##### 1.全部评论列表

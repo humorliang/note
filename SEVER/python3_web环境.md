@@ -134,14 +134,15 @@ supervisorctl stop [todo]                #关闭 [todo]
 supervisorctl start [todo]               #启动 [todo]
 supervisorctl restart [todo]             #重启 [todo]
 supervisorctl reread
-supervisorctl update                    #更新新的配置
+supervisorctl update                     # 更新新的配置
+supervisorctl -c supervisord.conf reload # 找到配置文件所在的位置
 ```
 6. 问题
 * 解决unix:///tmp/supervisor.sock no such file的问题
 ```bash
 # 杀死进程
 kill -9 pidId 
-# 重新开启
+# 重新开启  supervisord -c 配置文件路径  reload
 /usr/bin/supervisord -c /etc/supervisord.conf
 systemctl restart supervisord.service
 ```

@@ -412,6 +412,100 @@ put请求：http://www.test.com/v1/admin/comment/
 ```
 #### 友链
 ##### 1.添加友链
+post 请求：http://www.test.com/v1/admin/link
+参数：json
+```json
+{
+	"link_name":"QQ",
+	"link_url":"www.qq.com",
+	"link_description":"这是百度链接",
+	"link_image_url":""
+}
+```
+响应：
+```json
+{
+    "code": 0,
+    "data": "添加成功",
+    "msg": "success"
+}
+```
+##### 2.获取链接列表
+post 请求：http://www.test.com/v1/admin/links?page_num=1
+参数：query
+```
+page_num:页码
+```
+响应：
+```json
+{
+    "code": 0,
+    "msg": "success",
+    "data": {
+        "link_total": 3,
+        "page_num": 1,
+        "link_list": [
+            {
+                "link_description": "这是百度链接",
+                "link_id": 1,
+                "link_name": "百度",
+                "link_url": "www.baidu.com",
+                "link_visible": 0,
+                "user_nicename": "山猫"
+            },
+            {
+                "link_description": "这是百度链接",
+                "link_id": 2,
+                "link_name": "QQ",
+                "link_url": "www.qq.com",
+                "link_visible": 0,
+                "user_nicename": "山猫"
+            },
+            {
+                "link_description": "这是百度链接",
+                "link_id": 3,
+                "link_name": "邮箱",
+                "link_url": "www.mail.qq.com",
+                "link_visible": 0,
+                "user_nicename": "山猫"
+            }
+        ]
+    }
+}
+```
+##### 3.删除友链
+delete 请求：http://www.test.com/v1/admin/link
+参数：json
+```json
+{
+	"link_id":1,
+}
+```
+响应：
+```json
+{
+    "code": 0,
+    "data": "删除成功",
+    "msg": "success"
+}
+```
+##### 4.编辑友链
+put 请求：http://www.test.com/v1/admin/link
+参数：json
+```json
+{
+	"link_id":1,
+    "link_visible":1,
+}
+```
+响应：
+```json
+{
+    "code": 0,
+    "data": "编辑成功",
+    "msg": "success"
+}
+```
 
 ### 界面API
 ##### 1.获取文章详细信息

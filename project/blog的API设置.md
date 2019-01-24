@@ -431,7 +431,7 @@ post 请求：http://www.test.com/v1/admin/link
 }
 ```
 ##### 2.获取链接列表
-post 请求：http://www.test.com/v1/admin/links?page_num=1
+get 请求：http://www.test.com/v1/admin/links?page_num=1
 参数：query
 ```
 page_num:页码

@@ -245,7 +245,7 @@ docker ps -a
 ```
 1. 查看自己IP
 ifconfig  
-inet 192.168.199.192
+# inet 192.168.199.192
 
 2. 使用自己电脑已经安装的mysql连接docker的mysql
 mysql -u root -p -h 192.168.199.192 -P 6666

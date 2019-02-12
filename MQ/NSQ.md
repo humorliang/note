@@ -1,6 +1,7 @@
 #### NSQ文档
 > 官方文档：https://nsq.io/overview/quick_start.html
 > 中文文档：http://wiki.jikexueyuan.com/project/nsq-guide/nsqlookupd.html
+> 如何使用NSQ处理7500亿消息的:http://www.jfh.com/jfperiodical/article/1949?utm_source=tuicool&utm_medium=referral?
 #### NSQ理解
 1. 整个Nsq服务包含三个主要部分
 ##### nsqlookupd（中心管理服务）
@@ -39,4 +40,41 @@ nsqadmin默认的访问地址是http://127.0.0.1:4171/
     3. 保证队列中的message至少会被消费一次，即使nsqd退出，也会将队列中的消息暂存磁盘上(结束进程等意外情况除外)
     4. 限定内存占用，能够配置nsqd中每个channel队列在内存中缓存的message数量，一旦超出，message将被缓存到磁盘中
     5. topic，channel一旦建立，将会一直存在，要及时在管理台或者用代码清除无效的topic和channel，避免资源的浪费
+```
+
+#### 服务管理
+##### 官方文档
+```
+1. in one shell, start nsqlookupd:
+$ nsqlookupd
+
+2. in another shell, start nsqd:
+$ nsqd --lookupd-tcp-address=127.0.0.1:4160
+
+3. in another shell, start nsqadmin:
+$ nsqadmin --lookupd-http-address=127.0.0.1:4161
+
+4. publish an initial message (creates the topic in the cluster, too):
+$ curl -d 'hello world 1' 'http://127.0.0.1:4151/pub?topic=test'
+
+5. finally, in another shell, start nsq_to_file:
+$ nsq_to_file --topic=test --output-dir=/tmp --lookupd-http-address=127.0.0.1:4161
+
+6. publish more messages to nsqd:
+$ curl -d 'hello world 2' 'http://127.0.0.1:4151/pub?topic=test'
+$ curl -d 'hello world 3' 'http://127.0.0.1:4151/pub?topic=test'
+
+7. to verify things worked as expected, in a web browser open http://127.0.0.1:4171/ to view the nsqadmin UI and see statistics. Also, check the contents of the log files (test.*.log) written to /tmp.
+```
+##### 开启nsq服务
+```bash
+# 运行NSQ
+
+# 1. 首先启动nsqlookud
+nsqlookupd
+# 2. 启动nsqd，并接入刚刚启动的nsqlookud。这里为了方便接下来的测试，启动了两个nsqd
+nsqd --lookupd-tcp-address=127.0.0.1:4160
+nsqd --lookupd-tcp-address=127.0.0.1:4160 --tcp-address=0.0.0.0:4152 --http-address=0.0.0.0:4153
+# 3. 启动nqsadmin
+nsqadmin --lookupd-http-address=127.0.0.1:4161
 ```

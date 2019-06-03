@@ -19,7 +19,7 @@ docker wait # 阻塞到一个容器，直到容器停止运行
 docker ps # 显示状态为运行（Up）的容器
 docker ps -a # 显示所有容器,包括运行中（Up）的和退出的(Exited)
 docker inspect # 深入容器内部获取容器所有信息
-docker logs # 查看容器的日志(stdout/stderr)
+docker logs # 查看容器的日志(stdout/stderr) docker logs ca4947f8d3f3
 docker events # 得到docker服务器的实时的事件
 docker port # 显示容器的端口映射
 docker top # 显示容器的进程信息

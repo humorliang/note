@@ -58,3 +58,72 @@ web:
   command: /bin/bash -c "envsubst < /etc/nginx/conf.d/mysite.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"
 # -------
 ```
+### docker 创建es
+
+- docker操作
+```bash
+# 拉去镜像
+docker pull elasticsearch
+# 运行容器
+docker run -d --name es -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" elasticsearch
+
+# 进入容器
+docker exec -it es /bin/bash
+
+# 进行配置
+－－－－－－－－－－－－－
+# 显示文件
+ls
+结果如下：
+LICENSE.txt  README.textile  config  lib   modules
+NOTICE.txt   bin             data    logs  plugins
+# 进入配置文件夹
+cd config
+# 显示文件
+ls
+结果如下：
+elasticsearch.keystore  ingest-geoip  log4j2.properties  roles.yml  users_roles
+elasticsearch.yml       jvm.options   role_mapping.yml   users
+# 修改配置文件
+vi elasticsearch.yml
+# 加入跨域配置
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+－－－－－－－－－－－－－
+
+# 重启容器
+docker restart es
+
+# es可视化客户端
+# 拉取镜像
+docker pull mobz/elasticsearch-head:5
+# 启动容器
+docker run -d -p 9100:9100 --name es-manager  mobz/elasticsearch-head:5
+```
+- 访问地址
+```bash
+# 查看节点信息
+http://127.0.0.1:9200/_cat/nodes?pretty
+
+# 客户端访问地址
+http://127.0.0.1:9100/
+
+# es状态
+http://127.0.0.1:9200/_cluster/state
+```
+- es客户端未连接问题
+```bash
+# 修改配置文件 跨域问题
+1. 本机创建配置文件
+vim elasticsearch.yml
+```
+http.host: 0.0.0.0
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+```
+2. 复制本机文件　到容器
+docker cp elasticsearch.yml es:/usr/share/elasticsearch/config
+
+
+
+```

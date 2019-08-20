@@ -123,7 +123,42 @@ http.cors.allow-origin: "*"
 ```
 2. 复制本机文件　到容器
 docker cp elasticsearch.yml es:/usr/share/elasticsearch/config
-
-
-
 ```
+#### docker 创建Kafka
+1. 拉取镜像
+```bash
+docker pull wurstmeister/kafka
+(而外相关镜像拉取)
+zookeeper(wurstmeister/zookeeper:latest)
+kafka-manager(sheepkiller/kafka-manager:latest)
+```
+2. 创建服务（docker-compose.yml文件）
+```dockerfile
+version: '2'
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  kafka:
+    image: wurstmeister/kafka
+    ports:
+      - "9092"
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: 192.168.45.20  # 修改为本机地址
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime
+  kafka-manager:  
+    image: sheepkiller/kafka-manager # 镜像：开源的web管理kafka集群的界面
+    environment:
+        ZK_HOSTS: 192.168.45.20 # 修改为本机地址
+    ports:  
+      - "9000:9000"
+```
+3. 启动服务
+docker-compose up -d
+
+4. kafka 扩展和缩容
+docker-compose scale kafka=3

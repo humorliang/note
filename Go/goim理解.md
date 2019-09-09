@@ -25,6 +25,11 @@ services:
     depends_on:
       - "zookeeper"
 ```
+```go
+panic: kafka server: Offset's topic has not yet been created.
+在docker-compose.yml 的配置文件中　KAFKA_ADVERTISED_HOST_NAME: 192.168.45.11 # docker-machine ip
+确保IP地址为本机地址．
+```
 1.1 测试kafka 是否正常
 ```sh
 docker exec -it goim_kafka_1 /bin/bash

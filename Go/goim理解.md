@@ -57,5 +57,94 @@ nohup ./discovery -conf discovery-example.toml  -log.stdout 2>error.log 1> disco
 1. http 接口向logic发送数据
 2. logic 从redis中取出会话数据，以protobuf序列化数据　发送给MQ 
 3. job从MQ中订阅数据，取出
+```
+- Ring Buffer理解
+环形缓冲区：
+```
+含义：
+  环形缓冲区(ring buffer), 又称圆形队列（circular queue), 循环缓冲区(cyclic buffer), 圆形缓冲区(circular buffer)。
+解释：
+  它适合于实现明确大小的FIFO缓冲区，通常由一个数组实现，start和end两个索引来表示数据的开始和结束，length表示当前元素个数，capacity表示缓冲区容量。当有元素删除或插入时只需要移动start和end，其他元素不需要移动存储位置。
+工作过程：
+  缓冲区数据结构为一个capacity长度的数组，初始start、end、length为0，有新元素插入时，插入到end索引的位置，end后移，length增加，当end在超过数组的最大索引时，end为0，当length等于capacity时表示缓冲区满.读取元素时，从start开始读取，start增加，length减少，当start超过数组索引最大值时，start为0,当length为0是表示已经全部读出
+```
+示例：
+```go
+package ringbuffer
 
+import "errors"
+
+var (
+	ErrRingEmpty = errors.New("Ring is empty! ")
+	ErrRingFull  = errors.New("Ring is Full! ")
+)
+
+type Proto struct {
+}
+
+type RingBuf struct {
+	rp   int
+	wp   int
+	mask int
+	num  int
+	data []Proto
+}
+
+func Init(num int) *RingBuf {
+	r := new(RingBuf)
+	r.init(num)
+	return r
+}
+
+func (r *RingBuf) init(num int) {
+	//确保num为2n
+	if num&(num-1) != 0 {
+		for num&(num-1) != 0 {
+			num &= (num - 1)
+		}
+		//左移
+		num = num << 1
+	}
+	//初始化为零值
+	r.data = make([]Proto, num)
+	r.num = num
+	//用于取余计算
+	r.mask = r.num - 1
+}
+
+//Get 读取一块buf item
+func (r *RingBuf) Get() (proto *Proto, err error) {
+	if r.rp == r.wp {
+		return nil, ErrRingEmpty
+	}
+	proto = &r.data[r.rp&r.mask]
+	return
+}
+
+//GetAdv 移动游标位置
+func (r *RingBuf) GetAdv() {
+	r.rp++
+}
+
+//Set　获取一块buf item 进行写
+func (r *RingBuf) Set() (proto *Proto, err error) {
+	if r.wp-r.rp >= r.num {
+		return nil, ErrRingFull
+	}
+	proto = &r.data[r.wp&r.mask]
+	return
+}
+
+func (r *RingBuf) SetAdv() {
+	r.wp++
+}
+```
+- 按位取余操作
+```go
+%运算: a%b （此公式只适用b=2n)
+由于我们知道位运算比较高效，在某些情况下，当b为2的n次方时，有如下替换公式：
+a % b = a & (b-1)(b=2n)
+即：a % 2n = a & (2n-1)
+
+例如：14%8，取余数，相当于取出低位，而余数最大为7，14二进制为1110，8的二进制1000，8-1 = 7的二进制为0111，由于现在低位全为1，让其跟14做&运算，正好取出的是其低位上的余数。1110&0111=110即6=14%8；（此公式只适用b=2n，是因为可以保证b始终只有最高位为1，其他二进制位全部为0，减去1，之后，可以把高位1消除，其他位都为1，而与1做&运算，会保留原来的数。）
 ```

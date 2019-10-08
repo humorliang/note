@@ -72,7 +72,61 @@ if condition {
 - 从上至下逐一测试，直到匹配为止,匹配到退出，不需要特别使用 break 语句来表示结束。
 - fallthrough关键字
     - 如果在执行完每个分支的代码后，继续执行后续分支的代码
+- 常见几种形式
+```go
+package main
 
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+
+    i := 2
+    fmt.Print("Write ", i, " as ")
+    //常见形式
+    switch i {
+    case 1:
+        fmt.Println("one")
+    case 2:
+        fmt.Println("two")
+    case 3:
+        fmt.Println("three")
+    }
+    //case 多个判断,用分割符分割  两者之间是 或 的关系
+    switch time.Now().Weekday() {
+    case time.Saturday, time.Sunday:
+        fmt.Println("It's the weekend")
+    default:
+        fmt.Println("It's a weekday")
+    }
+
+    t := time.Now()
+    //没有表达式的 switch 可以代替 if else 的功能
+    switch {
+    case t.Hour() < 12:
+        fmt.Println("It's before noon")
+    default:
+        fmt.Println("It's after noon")
+    }
+
+    whatAmI := func(i interface{}) {
+        // 起类型判断的作用 对接口进行类型判断
+        switch t := i.(type) {
+        case bool:
+            fmt.Println("I'm a bool")
+        case int:
+            fmt.Println("I'm an int")
+        default:
+            fmt.Printf("Don't know type %T\n", t)
+        }
+    }
+    whatAmI(true)
+    whatAmI(1)
+    whatAmI("hey")
+}
+```
 ### for结构
 1. 基于计数器的迭代
 ```go

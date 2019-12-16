@@ -156,3 +156,55 @@ error: read tcp 127.0.0.1:45454->127.0.0.1:3101: read: connection reset by peer
 1. 当服务重启后过一段时间进行请求.
 2. 由于服务没有完全注册成功,导致服务之间不可用,导致连接重置.
 ```
+### goim protobuf定义
+- comet服务的 proto 定义
+```go
+// Ping Service 
+rpc Ping (Empty) returns (Empty);
+// Close Service 
+rpc Close (Empty) returns (Empty);
+//PushMsg push by key or mid
+rpc PushMsg (PushMsgReq) returns (PushMsgReply);
+// Broadcast send to every enrity
+rpc Broadcast (BroadcastReq) returns (BroadcastReply);
+// BroadcastRoom broadcast to one room
+rpc BroadcastRoom (BroadcastRoomReq) returns (BroadcastRoomReply);
+// Rooms get all rooms
+rpc Rooms (RoomsReq) returns (RoomsReply);
+```
+
+- logic服务　proto 定义
+```go
+// Ping Service 
+rpc Ping (PingReq) returns (PingReply);
+// Close Service 
+rpc Close (CloseReq) returns (CloseReply);
+// Connect
+rpc Connect (ConnectReq) returns (ConnectReply);
+// Disconnect
+rpc Disconnect (DisconnectReq) returns (DisconnectReply);
+// Heartbeat
+rpc Heartbeat (HeartbeatReq) returns (HeartbeatReply);
+// RenewOnline
+rpc RenewOnline (OnlineReq) returns (OnlineReply);
+// Receive
+rpc Receive (ReceiveReq) returns (ReceiveReply);
+//ServerList
+rpc Nodes (NodesReq) returns (NodesReply);
+//last message
+rpc LastMsg (LastMsgReq) returns (LastMsgReply);
+```
+### goim - comet服务
+```go
+// cmd/comet/main.go
+1. 服务注册到bilibil discovery服务注册中心 初始化server,建立logic.rpcClient
+// internal/comet/server_tcp.go
+2. 建立tcp,websocket服务监听(tcp ,websocket init)
+3.1. eg: 具体tcp　服务 AcceptTCP()　设置相关连接的基本设置。
+3.2. 其中所需的数据结构：
+// internal/comet/round.go　读写缓存buffio  定时器timer (对定时器,和系统buf进行复用)
+// internal/comet/channel.go 管理相关连接(Room Ring,双链表Channel,writer,reader,watchOps)
+// 管理连接对象的房间信息，读写信息，订阅的消息类型
+// internal/comet/bucket.go　整个comet服务 对象的管理中心
+// (map[string]*Channel,map[string]*Room,[]chan *grpc.BroadcastRoomReq)
+```

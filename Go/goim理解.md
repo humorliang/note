@@ -207,4 +207,30 @@ rpc LastMsg (LastMsgReq) returns (LastMsgReply);
 // 管理连接对象的房间信息，读写信息，订阅的消息类型
 // internal/comet/bucket.go　整个comet服务 对象的管理中心
 // (map[string]*Channel,map[string]*Room,[]chan *grpc.BroadcastRoomReq)
+// internal/comet/operation.go　操作comet服务的logicRpc client进行logic的rpc　server请求工作。
+// internal/comet/grpc/server.go comet的gRPC服务设置
+```
+### goim - logic服务
+```go
+// cmd/logic/main.go 
+1. 服务注册到bilibil discovery服务注册中心 初始化logic RPC server 以及初始化数据管理统计server，面向消息推送的http server
+// internal/logic/grpc/server.go 实现protobuf的logic rpc服务
+// internal/logic/conn.go　对logic rpc 具体操作的细节，数据操作层　dao层的数据交互
+// internal/logic/logic.go Logic(conf,discovery,dao,instances,balancer)定义具体操作的方法
+// 初始化区域，节点，在线房间等统计。
+// internal/logic/balancer.go　负载均衡服务等
+// internal/logic/nodes.go　节点服务平台统计
+// internal/logic/online.go　统计在线详情
+// internal/logic/push.go 数据推送到kafka
+// internal/logic/http/server.go 提供http server api
+//internal/logic/dao/dao.go 数据操作层 与redis kafka进行操作。
+```
+### goim - job 服务
+```go
+// cmd/job/main.go
+1. 初始化discovery配置　生成job rpc服务,订阅消息通道kafka 
+// internal/job/job.go   job结构包含(kafka ,comet, room,conf)　go j.Consume()　订阅kafka消息通道
+// internal/job/comet.go　获取comet rpc请求客户端，定义与rpc server交互的方法(消息交互的方法)。
+// internal/job/push.go　消息处理进行分类推送
+// internal/job/room.go　对房间进行操作
 ```

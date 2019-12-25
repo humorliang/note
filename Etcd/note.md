@@ -62,3 +62,24 @@ docker exec etcd-gcr-v3.3.12 /bin/sh -c "ETCDCTL_API=3 /usr/local/bin/etcdctl en
 docker exec etcd-gcr-v3.3.12 /bin/sh -c "ETCDCTL_API=3 /usr/local/bin/etcdctl put foo bar"
 docker exec etcd-gcr-v3.3.12 /bin/sh -c "ETCDCTL_API=3 /usr/local/bin/etcdctl get foo"
 ```
+### etcd and grpc 服务注册发现
+```go
+// grpc定义了解析的实现的接口
+// Builder (解析的生成器)
+type Builder interface {
+  //此函数的功能　根据　target 和　和传递进来的　grpc 客户端连接接口　以及可选配置项
+  //进行具体的解析以及　去更新连接（cc）状态
+  Build(target Target, cc ClientConn, opts BuildOption) (Resolver, error)
+  //返回相关协议
+  Scheme() string
+}
+//解析器接口　(提供一个隐式传递)　
+type Resolver interface {
+  //grpc　的命名解析可以多次执行，函数仅仅提示提示作用，解析器可以忽略
+	ResolveNow(ResolveNowOption)
+	// Close closes the resolver.
+	Close()
+}
+//　etcd 在build 函数中进行相关服务的解析以及节点的解析，以及管理服务节点
+// eg: https://github.com/humorliang/kaleidoscope/tree/master/minisrv
+```

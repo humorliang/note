@@ -69,3 +69,61 @@
 
 ### 反模式
 - 级联故障：一个系统的某部分出现错误，与之有关的上下级也随之出现故障，导致多米诺效应。
+
+### options 功能函数参数模式
+- 实例化时根据参数的功能函数，实现自定义参数，设置默认参数结构体，对外暴露设置参数结构体的方法而非结构体
+```go 
+// Options
+//Options es 参数信息
+type options struct {
+	host     string
+	port     string
+	isAuth   bool
+	userName string
+	password string
+}
+
+type Option func(*options)
+
+//NewClient new a es client.
+func NewClient(opts ...Option) {
+	var (
+		args = &options{
+			host:     "localhost",
+			port:     "9200",
+			isAuth:   false,
+			userName: "",
+			password: "",
+		}
+	)
+	for _, setter := range opts {
+		setter(args)
+	}
+	elasticsearch.NewDefaultClient()
+}
+
+//WithEsHost set host name
+func WithEsClientHost(host string) Option {
+	return func(opts *options) {
+		opts.host = host
+	}
+}
+
+func  WithEsClientPort(port string) Option {
+	return func(opts *options) {
+		opts.port = port
+	}
+}
+
+func  WithEsClientIsAuth(auth bool) Option {
+	return func(opts *options) {
+		opts.isAuth = true
+	}
+}
+
+func  WithEsClientUserName(name string) Option {
+	return func(opts *options) {
+		opts.isAuth = true
+	}
+}
+```

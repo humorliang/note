@@ -57,6 +57,7 @@ nohup ./discovery -conf discovery-example.toml  -log.stdout 2>error.log 1> disco
 1. http 接口向logic发送数据
 2. logic 从redis中取出会话数据，以protobuf序列化数据　发送给MQ 
 3. job从MQ中订阅数据，取出
+4. job通过grpc 请求到comet rpc server
 ```
 - Ring Buffer理解
 环形缓冲区：
@@ -209,6 +210,13 @@ rpc LastMsg (LastMsgReq) returns (LastMsgReply);
 // (map[string]*Channel,map[string]*Room,[]chan *grpc.BroadcastRoomReq)
 // internal/comet/operation.go　操作comet服务的logicRpc client进行logic的rpc　server请求工作。
 // internal/comet/grpc/server.go comet的gRPC服务设置
+
+// 数据逻辑
+１．服务中心　定义
+２．生成comet server (管理与client connect) srv
+３．srv 初始化tcp  ws wss
+4. 生成一个comet grpc server  (定义的 type server struct {srv *comet.Server}) 包含了客户端的连接信息
+5. grpc server　根据job server的　comet grpc client 请求的信息　进行相关数据以及连接的数据处理
 ```
 ### goim - logic服务
 ```go
@@ -233,4 +241,8 @@ rpc LastMsg (LastMsgReq) returns (LastMsgReply);
 // internal/job/comet.go　获取comet rpc请求客户端，定义与rpc server交互的方法(消息交互的方法)。
 // internal/job/push.go　消息处理进行分类推送
 // internal/job/room.go　对房间进行操作
+// 逻辑过程：
+１．根据config info 注册job instance info到discovery
+2. 定义一个job  server 并且监听comet instance info
+3. 订阅kafka 进行消息消费
 ```

@@ -25,3 +25,9 @@ sudo service mysql stop
 
 sudo service mysql start
 ```
+
+docker 安装mysql
+```bash
+//挂载mysql得配置  设置端口导出  设置管理员密码 以及 mysql 版本
+docker run --name some-mysql -v /my/custom:/etc/mysql/conf.d -p 33306:3306 -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+```
